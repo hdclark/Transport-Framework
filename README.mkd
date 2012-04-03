@@ -3,6 +3,14 @@
 Author: hal clark.
 Date: February - March 2012.
 
+== Where to get started ==
+
+The best place to learn about what this framework can do, consult the document:
+    "References\_etc/Technical\_report\_1.pdf".
+ To learn about the code structure, organization, or design, (currently) the best
+ place to look is at the source itself (a future technical report will address
+ these questions, but currently no documentation exists.)
+
 == Introduction ==
 
 This software simulates transport through a medium. It is not intended to be fast, but
