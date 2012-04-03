@@ -1,0 +1,76 @@
+
+
+Timing fitted/linear/cpslines water interpolation - 1000000 photons - Electron localdumps.
+
+   fitted:       (This is the worst-looking data. Flat regions are well approximated, but any curvature is poorly handled.)
+real	1m15.928s
+user	1m15.645s
+sys	0m0.273s
+
+
+   linear:       (This data looks fairly good - a little 'parabolic'-like in some areas (mostly low energy)
+real	0m54.420s
+user	0m54.150s
+sys	0m0.267s
+
+
+    csplines:    (This data looks fairly good. It is complementary to the linear interpolation. Also has some curvature issues. Curvature might be in inconvenient/dangerous locations. Test it!)
+real	0m56.475s
+user	0m56.226s
+sys	0m0.237s
+
+
+
+Timing for 2 million photons in infinite water tank on laptop (one core)
+
+[hal@Crushernator Project - Transport]$ time ./transport
+
+real	12m51.554s
+user	9m8.394s
+sys	3m17.104s
+                             be careful, though. Memory usage on the laptop was up to  ~50% !
+                             ALSO note that over 700 MB of data was written. Make sure /tmp/ can handle it!
+
+
+
+
+Timing for 2 million photons in infinite water tank on archunderling.
+
+[hal@archunderling Project - Transport]$ time ./transport 
+
+real	16m47.782s
+user	3m43.379s
+sys	10m52.504s
+
+
+Timing for 200 thousand photons in  infinite water tank on archunderling.
+
+[hal@archunderling Project - Transport]$ time ./transport 
+
+real	3m0.784s
+user	0m24.882s
+sys	1m59.499s
+
+
+Timing for 500 thousand photons in CT geometry (10x energy scaling) on flancrest:
+[hal@flancrest Project - Transport]$ time ./transport 
+
+real	2m15.967s
+user	1m49.196s
+sys	0m25.078s
+
+Timing for 500 thousand photons in CT geometry (10x energy scaling) on laptop (1.88MHz):
+[hal@Crushernator Project - Transport]$ time ./transport 
+
+real	2m52.286s
+user	2m21.627s
+sys	0m26.375s
+
+and at 1.33MHz
+[hal@Crushernator Project - Transport]$ time ./transport 
+
+real	3m52.921s
+user	3m11.944s
+sys	0m36.304s
+
+

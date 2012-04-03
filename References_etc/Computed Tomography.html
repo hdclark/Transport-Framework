@@ -1,0 +1,408 @@
+	 
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Computed Tomography</title>
+<link href="/new/css/default.css" rel="stylesheet" type="text/css" />
+
+<script type='text/javascript' src='/new/js/jquery-1.5.js'></script>
+<script type='text/javascript' src='/new/js/jquery.droppy.js'></script>
+<link rel="stylesheet" href="/new/css/droppy.css" type="text/css" />
+<script type='text/javascript' src='/new/js/jcc.js'></script>
+<script>
+$(function(){
+	if($.browser.msie){
+        if($.browser.version.substr(0,1)!="9"){
+            $('#greenBox2').corner({tl:{radius:5}, tr:{radius:5}, bl:{radius:5}, br:{radius:5}, antiAlias:true });
+        }
+    }else{
+        $('#greenBox2').corner({tl:{radius:5}, tr:{radius:5}, bl:{radius:3}, br:{radius:5}, antiAlias:true });
+    }
+});
+</script>
+
+<link rel="stylesheet" href="/new/css/jquery.treeview.css" />
+<script src="/new/js/jquery.cookie.js" type="text/javascript"></script>
+<script src="/new/js/jquery.treeview.js" type="text/javascript"></script>
+<script type="text/javascript" src="/new/js/demo.js"></script>
+
+</head>
+
+<body>
+
+
+<div id="divPage">
+	<div id="wrapper" class="not-logged-in">
+		
+		<!-- Header -->
+		
+<div id="header">
+			<h1>The Scientist and Engineer's Guide to<br />Digital Signal Processing<br /><span class="txtBlue txt26">By Steven W. Smith, Ph.D.</span></h1>
+			<div id="menu">
+				<ul id='nav' style="margin-left:10px;"><li><a href="http://www.dspguide.com">Home</a></li><li><a href="http://www.dspguide.com/pdfbook.htm" class="selected">The Book by Chapters</a></li><li class="drop"><a href="http://www.dspguide.com/about.htm">About the Book</a>					
+					<ul>						
+						<li><a href="http://www.dspguide.com/copyrite.htm">Copyright and permissible use</a></li>							
+						<li><a href="http://www.dspguide.com/whatdsp.htm">What is DSP?</a></li>
+						<li><a href="http://www.dspguide.com/eightres.htm">8 good reasons for learning DSP</a></li>
+						<li><a href="http://www.dspguide.com/reviews.htm">Comments by reviewers</a></li>
+						<li><a href="http://www.dspguide.com/errata.htm">Errata</a></li>			
+						<li><a href="download.htm">Free Software and Teaching Aids</a></li>						
+						<li><a href="http://www.dspguide.com/editions.htm">Differences Between Editions</a></li>
+					</ul>
+				  </li><li><a href="http://www.dspguide.com/swsmith.htm">Steven W. Smith</a></li><li><a href="http://www.dsprelated.com/blogs-1/nf/Steve_Smith.php">Blog</a></li><li><a href="http://www.dspguide.com/contact.htm">Contact</a></li>					
+				</ul>
+				<script type="text/javascript">$(function() {$("#nav").droppy();});</script>
+			</div>
+		</div>
+
+		
+		<!-- Content -->
+		
+		<!-- -->		
+		<div id="columnLeft">			
+			
+			<div class="box">
+				<h2>Book Search</h2>
+				<div id="search">
+					<form action="/search.php" method="post">
+						<input type="text" name="searchfor" class="txtField" />
+						<input type="image" src="/new/images/btn-go.png" name="Submit" value="Submit" class="button" />
+						<div class="clear"><!-- --></div>
+					</form>
+				</div>
+			</div>
+		
+			
+			<div class="box">
+				<h2>Download this chapter in PDF format</h2>
+				<b><a href="http://www.dspguide.com/CH25.PDF">Chapter25.pdf</a></b>
+				<br />
+				<img src="/new/images/adobe-reader.png" alt="" vspace="5" />
+			</div>
+
+			<div class="box">
+				<h2>Table of contents</h2>
+				<ul id="red" class="treeview-red">	 
+					<ul style="border-top:1px solid #aeaeeb;"><li style="border-top:1px solid #aeaeeb;"><a href="/ch1.htm">1: The Breadth and Depth of DSP</a><ul><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch1/1.htm">The Roots of DSP</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch1/2.htm">Telecommunications</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch1/3.htm">Audio Processing</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch1/4.htm">Echo Location</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch1/5.htm" style="color:#b4b4e9;">Image Processing</a></li></ul></li><li style="border-top:1px solid #aeaeeb;"><a href="/ch2.htm">2: Statistics, Probability and Noise</a><ul><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch2/1.htm">Signal and Graph Terminology</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch2/2.htm">Mean and Standard Deviation</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch2/3.htm">Signal vs. Underlying Process</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch2/4.htm">The Histogram, Pmf and Pdf</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch2/5.htm" style="color:#b4b4e9;">The Normal Distribution</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch2/6.htm">Digital Noise Generation</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch2/7.htm">Precision and Accuracy</a></li></ul></li><li style="border-top:1px solid #aeaeeb;"><a href="/ch3.htm">3: ADC and DAC</a><ul><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch3/1.htm">Quantization</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch3/2.htm">The Sampling Theorem</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch3/3.htm">Digital-to-Analog Conversion</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch3/4.htm">Analog Filters for Data Conversion</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch3/5.htm" style="color:#b4b4e9;">Selecting The Antialias Filter</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch3/6.htm">Multirate Data Conversion</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch3/7.htm">Single Bit Data Conversion</a></li></ul></li><li style="border-top:1px solid #aeaeeb;"><a href="/ch4.htm">4: DSP Software</a><ul><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch4/1.htm">Computer Numbers</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch4/2.htm">Fixed Point (Integers)</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch4/3.htm">Floating Point (Real Numbers)</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch4/4.htm">Number Precision</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch4/5.htm" style="color:#b4b4e9;">Execution Speed: Program Language</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch4/6.htm">Execution Speed: Hardware</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch4/7.htm">Execution Speed: Programming Tips</a></li></ul></li><li style="border-top:1px solid #aeaeeb;"><a href="/ch5.htm">5: Linear Systems</a><ul><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch5/1.htm">Signals and Systems</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch5/2.htm">Requirements for Linearity</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch5/3.htm">Static Linearity and Sinusoidal Fidelity</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch5/4.htm">Examples of Linear and Nonlinear Systems</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch5/5.htm" style="color:#b4b4e9;">Special Properties of Linearity</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch5/6.htm">Superposition: the Foundation of DSP</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch5/7.htm">Common Decompositions</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch5/8.htm">Alternatives to Linearity</a></li></ul></li><li style="border-top:1px solid #aeaeeb;"><a href="/ch6.htm">6: Convolution</a><ul><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch6/1.htm">The Delta Function and Impulse Response</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch6/2.htm">Convolution</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch6/3.htm">The Input Side Algorithm</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch6/4.htm">The Output Side Algorithm</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch6/5.htm" style="color:#b4b4e9;">The Sum of Weighted Inputs</a></li></ul></li><li style="border-top:1px solid #aeaeeb;"><a href="/ch7.htm">7: Properties of Convolution</a><ul><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch7/1.htm">Common Impulse Responses</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch7/2.htm">Mathematical Properties</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch7/3.htm">Correlation</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch7/4.htm">Speed</a></li></ul></li><li style="border-top:1px solid #aeaeeb;"><a href="/ch8.htm">8: The Discrete Fourier Transform</a><ul><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch8/1.htm">The Family of Fourier Transform</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch8/2.htm">Notation and Format of the Real DFT</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch8/3.htm">The Frequency Domain's Independent Variable</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch8/4.htm">DFT Basis Functions</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch8/5.htm" style="color:#b4b4e9;">Synthesis, Calculating the Inverse DFT</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch8/6.htm">Analysis, Calculating the DFT</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch8/7.htm">Duality</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch8/8.htm">Polar Notation</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch8/9.htm">Polar Nuisances</a></li></ul></li><li style="border-top:1px solid #aeaeeb;"><a href="/ch9.htm">9: Applications of the DFT</a><ul><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch9/1.htm">Spectral Analysis of Signals</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch9/2.htm">Frequency Response of Systems</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch9/3.htm">Convolution via the Frequency Domain</a></li></ul></li><li style="border-top:1px solid #aeaeeb;"><a href="/ch10.htm">10: Fourier Transform Properties</a><ul><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch10/1.htm">Linearity of the Fourier Transform</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch10/2.htm">Characteristics of the Phase</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch10/3.htm">Periodic Nature of the DFT</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch10/4.htm">Compression and Expansion, Multirate methods</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch10/5.htm" style="color:#b4b4e9;">Multiplying Signals (Amplitude Modulation)</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch10/6.htm">The Discrete Time Fourier Transform</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch10/7.htm">Parseval's Relation</a></li></ul></li><li style="border-top:1px solid #aeaeeb;"><a href="/ch11.htm">11: Fourier Transform Pairs</a><ul><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch11/1.htm">Delta Function Pairs</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch11/2.htm">The Sinc Function</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch11/3.htm">Other Transform Pairs</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch11/4.htm">Gibbs Effect</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch11/5.htm" style="color:#b4b4e9;">Harmonics</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch11/6.htm">Chirp Signals</a></li></ul></li><li style="border-top:1px solid #aeaeeb;"><a href="/ch12.htm">12: The Fast Fourier Transform</a><ul><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch12/1.htm">Real DFT Using the Complex DFT</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch12/2.htm">How the FFT works</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch12/3.htm">FFT Programs</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch12/4.htm">Speed and Precision Comparisons</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch12/5.htm" style="color:#b4b4e9;">Further Speed Increases</a></li></ul></li><li style="border-top:1px solid #aeaeeb;"><a href="/ch13.htm">13: Continuous Signal Processing</a><ul><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch13/1.htm">The Delta Function</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch13/2.htm">Convolution</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch13/3.htm">The Fourier Transform</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch13/4.htm">The Fourier Series</a></li></ul></li><li style="border-top:1px solid #aeaeeb;"><a href="/ch14.htm">14: Introduction to Digital Filters</a><ul><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch14/1.htm">Filter Basics</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch14/2.htm">How Information is Represented in Signals</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch14/3.htm">Time Domain Parameters</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch14/4.htm">Frequency Domain Parameters</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch14/5.htm" style="color:#b4b4e9;">High-Pass, Band-Pass and Band-Reject Filters</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch14/6.htm">Filter Classification</a></li></ul></li><li style="border-top:1px solid #aeaeeb;"><a href="/ch15.htm">15: Moving Average Filters</a><ul><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch15/1.htm">Implementation by Convolution</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch15/2.htm">Noise Reduction vs. Step Response</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch15/3.htm">Frequency Response</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch15/4.htm">Relatives of the Moving Average Filter</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch15/5.htm" style="color:#b4b4e9;">Recursive Implementation</a></li></ul></li><li style="border-top:1px solid #aeaeeb;"><a href="/ch16.htm">16: Windowed-Sinc Filters</a><ul><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch16/1.htm">Strategy of the Windowed-Sinc</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch16/2.htm">Designing the Filter</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch16/3.htm">Examples of Windowed-Sinc Filters</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch16/4.htm">Pushing it to the Limit</a></li></ul></li><li style="border-top:1px solid #aeaeeb;"><a href="/ch17.htm">17: Custom Filters</a><ul><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch17/1.htm">Arbitrary Frequency Response</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch17/2.htm">Deconvolution</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch17/3.htm">Optimal Filters</a></li></ul></li><li style="border-top:1px solid #aeaeeb;"><a href="/ch18.htm">18: FFT Convolution</a><ul><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch18/1.htm">The Overlap-Add Method</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch18/2.htm">FFT Convolution</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch18/3.htm">Speed Improvements</a></li></ul></li><li style="border-top:1px solid #aeaeeb;"><a href="/ch19.htm">19: Recursive Filters</a><ul><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch19/1.htm">The Recursive Method</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch19/2.htm">Single Pole Recursive Filters</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch19/3.htm">Narrow-band Filters</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch19/4.htm">Phase Response</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch19/5.htm" style="color:#b4b4e9;">Using Integers</a></li></ul></li><li style="border-top:1px solid #aeaeeb;"><a href="/ch20.htm">20: Chebyshev Filters</a><ul><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch20/1.htm">The Chebyshev and Butterworth Responses</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch20/2.htm">Designing the Filter</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch20/3.htm">Step Response Overshoot</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch20/4.htm">Stability</a></li></ul></li><li style="border-top:1px solid #aeaeeb;"><a href="/ch21.htm">21: Filter Comparison</a><ul><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch21/1.htm">Match #1: Analog vs. Digital Filters</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch21/2.htm">Match #2: Windowed-Sinc vs. Chebyshev</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch21/3.htm">Match #3: Moving Average vs. Single Pole</a></li></ul></li><li style="border-top:1px solid #aeaeeb;"><a href="/ch22.htm">22: Audio Processing</a><ul><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch22/1.htm">Human Hearing</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch22/2.htm">Timbre</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch22/3.htm">Sound Quality vs. Data Rate</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch22/4.htm">High Fidelity Audio</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch22/5.htm" style="color:#b4b4e9;">Companding</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch22/6.htm">Speech Synthesis and Recognition</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch22/7.htm">Nonlinear Audio Processing</a></li></ul></li><li style="border-top:1px solid #aeaeeb;"><a href="/ch23.htm">23: Image Formation & Display</a><ul><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch23/1.htm">Digital Image Structure</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch23/2.htm">Cameras and Eyes</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch23/3.htm">Television Video Signals</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch23/4.htm">Other Image Acquisition and Display</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch23/5.htm" style="color:#b4b4e9;">Brightness and Contrast Adjustments</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch23/6.htm">Grayscale Transforms</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch23/7.htm">Warping</a></li></ul></li><li style="border-top:1px solid #aeaeeb;"><a href="/ch24.htm">24: Linear Image Processing</a><ul><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch24/1.htm">Convolution</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch24/2.htm">3x3 Edge Modification</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch24/3.htm">Convolution by Separability</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch24/4.htm">Example of a Large PSF: Illumination Flattening</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch24/5.htm" style="color:#b4b4e9;">Fourier Image Analysis</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch24/6.htm">FFT Convolution</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch24/7.htm">A Closer Look at Image Convolution</a></li></ul></li><li class="open" style="border-top:1px solid #aeaeeb;"><a href="/ch25.htm" style="color:#b4b4e9;">25: Special Imaging Techniques</a><ul><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch25/1.htm">Spatial Resolution</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch25/2.htm">Sample Spacing and Sampling Aperture</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch25/3.htm">Signal-to-Noise Ratio</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch25/4.htm">Morphological Image Processing</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch25/5.htm" style="color:#b4b4e9;">Computed Tomography</a></li></ul></li><li style="border-top:1px solid #aeaeeb;"><a href="/ch26.htm">26: Neural Networks (and more!)</a><ul><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch26/1.htm">Target Detection</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch26/2.htm">Neural Network Architecture</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch26/3.htm">Why Does it Work?</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch26/4.htm">Training the Neural Network</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch26/5.htm" style="color:#b4b4e9;">Evaluating the Results</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch26/6.htm">Recursive Filter Design</a></li></ul></li><li style="border-top:1px solid #aeaeeb;"><a href="/ch27.htm">27: Data Compression</a><ul><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch27/1.htm">Data Compression Strategies</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch27/2.htm">Run-Length Encoding</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch27/3.htm">Huffman Encoding</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch27/4.htm">Delta Encoding</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch27/5.htm" style="color:#b4b4e9;">LZW Compression</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch27/6.htm">JPEG (Transform Compression)</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch27/7.htm">MPEG</a></li></ul></li><li style="border-top:1px solid #aeaeeb;"><a href="/ch28.htm">28: Digital Signal Processors</a><ul><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch28/1.htm">How DSPs are Different from Other Microprocessors</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch28/2.htm">Circular Buffering</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch28/3.htm">Architecture of the Digital Signal Processor</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch28/4.htm">Fixed versus Floating Point</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch28/5.htm" style="color:#b4b4e9;">C versus Assembly</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch28/6.htm">How Fast are DSPs?</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch28/7.htm">The Digital Signal Processor Market</a></li></ul></li><li style="border-top:1px solid #aeaeeb;"><a href="/ch29.htm">29: Getting Started with DSPs</a><ul><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch29/1.htm">The ADSP-2106x family</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch29/2.htm">The SHARC EZ-KIT Lite</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch29/3.htm">Design Example: An FIR Audio Filter</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch29/4.htm">Analog Measurements on a DSP System</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch29/5.htm" style="color:#b4b4e9;">Another Look at Fixed versus Floating Point</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch29/6.htm">Advanced Software Tools</a></li></ul></li><li style="border-top:1px solid #aeaeeb;"><a href="/ch30.htm">30: Complex Numbers</a><ul><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch30/1.htm">The Complex Number System</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch30/2.htm">Polar Notation</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch30/3.htm">Using Complex Numbers by Substitution</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch30/4.htm">Complex Representation of Sinusoids</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch30/5.htm" style="color:#b4b4e9;">Complex Representation of Systems</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch30/6.htm">Electrical Circuit Analysis</a></li></ul></li><li style="border-top:1px solid #aeaeeb;"><a href="/ch31.htm">31: The Complex Fourier Transform</a><ul><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch31/1.htm">The Real DFT</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch31/2.htm">Mathematical Equivalence</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch31/3.htm">The Complex DFT</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch31/4.htm">The Family of Fourier Transforms</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch31/5.htm" style="color:#b4b4e9;">Why the Complex Fourier Transform is Used</a></li></ul></li><li style="border-top:1px solid #aeaeeb;"><a href="/ch32.htm">32: The Laplace Transform</a><ul><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch32/1.htm">The Nature of the s-Domain</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch32/2.htm">Strategy of the Laplace Transform</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch32/3.htm">Analysis of Electric Circuits</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch32/4.htm">The Importance of Poles and Zeros</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch32/5.htm" style="color:#b4b4e9;">Filter Design in the s-Domain</a></li></ul></li><li style="border-top:1px solid #aeaeeb;"><a href="/ch33.htm">33: The z-Transform</a><ul><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch33/1.htm">The Nature of the z-Domain</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch33/2.htm">Analysis of Recursive Systems</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch33/3.htm">Cascade and Parallel Stages</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch33/4.htm">Spectral Inversion</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch33/5.htm" style="color:#b4b4e9;">Gain Changes</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch33/6.htm">Chebyshev-Butterworth Filter Design</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch33/7.htm">The Best and Worst of DSP</a></li></ul></li><li style="border-top:1px solid #aeaeeb;"><a href="/ch34.htm">34: Explaining Benford's Law</a><ul><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch34/1.htm">Frank Benford's Discovery</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch34/2.htm">Homomorphic Processing</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch34/3.htm">The Ones Scaling Test</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch34/4.htm">Writing Benford's Law as a Convolution</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch34/5.htm" style="color:#b4b4e9;">Solving in the Frequency Domain</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch34/6.htm">Solving Mystery #1</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch34/7.htm">Solving Mystery #2</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch34/8.htm">More on Following Benford's law</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch34/9.htm">Analysis of the Log-Normal Distribution</a></li><li style="border-top:1px solid #aeaeeb;"><a href="http://www.dspguide.com/ch34/10.htm">The Power of Signal Processing</a></li></ul></li>
+					</ul>
+				</ul>			
+			</div>
+
+			<div class="box">
+				<h2>How to order your own hardcover copy</h2>
+				Wouldn't you rather have a bound book instead of 640 loose pages?<br />
+				Your laser printer will thank you!<br />
+				<b>Order from <a href="http://www.amazon.com/Scientist-Engineers-Digital-Signal-Processing/dp/0966017633/ref=pd_bxgy_b_img_a">Amazon.com</a>.</b>
+			</div>
+
+		
+			
+		</div>	
+
+		<!-- -->		
+		<div id="columnRight">	
+		
+			<div id="adbox">
+				
+<SCRIPT LANGUAGE="JavaScript">
+ord=Math.random();
+ord=ord*10000000000000000000;
+document.write('<IFRAME SRC="http://ad.doubleclick.net/adi/DSPGuide.GSIAN;sz=300x250;ord='+ord+'?" WIDTH="300" HEIGHT="250" MARGINWIDTH="0" MARGINHEIGHT="0" HSPACE="0" VSPACE="0" FRAMEBORDER="0" SCROLLING=no BORDERCOLOR="#000000">');
+if (navigator.userAgent.indexOf("Gecko")==-1)
+{document.write('<SCR' + 'IPT LANGUAGE="JavaScript" SRC="http://ad.doubleclick.net/adj/DSPGuide.GSIAN;sz=300x250;abr=!ie;abr=!nn6;ord='+ord+'?"><\/SCR' + 'IPT>');
+}
+document.write('</IFRAME>');
+</SCRIPT>
+<NOSCRIPT>
+<A HREF="http://ad.doubleclick.net/jump/DSPGuide.GSIAN;sz=300x250;ord=123456789?" TARGET="_blank">
+<IMG SRC="http://ad.doubleclick.net/ad/DSPGuide.GSIAN;sz=300x250;ord=123456789?" WIDTH="300" HEIGHT="250" BORDER="0" ALT="Click here..."></A>
+</NOSCRIPT>
+			
+			</div>	 
+			
+<div class="breadcrumbs"><a href="http://www.dspguide.com/ch25.htm">Chapter 25 - Special Imaging Techniques</a> / Computed Tomography</div><h2>Chapter 25: Special Imaging Techniques</h2><div class="subTitle">Computed Tomography</div><p><div style="text-align: justify"><p>A basic problem in imaging with x-rays (or other penetrating radiation) is that
+a <i>two-dimensional image</i> is obtained of a <i>three-dimensional object</i>.  This means
+that structures can <i>overlap</i> in the final image, even though they are completely
+separate in the object.  This is particularly troublesome in medical diagnosis
+where there are many anatomic structures that can interfere with what the
+physician is trying to see.  During the 1930's, this problem was attacked by
+moving the x-ray source and detector in a coordinated motion during image
+formation.  From the geometry of this motion, a single <i>plane</i> within the patient
+remains in focus, while structures outside this plane become blurred.  This is
+analogous to a camera being focused on an object at 5 feet, while objects at a
+distance of  1 and 50 feet are blurry.  These related techniques based on motion
+blurring are now collectively called <span style="font-weight: bold">classical tomography.</span>  The word
+<i>tomography</i> means <i>"a picture of a plane."</i></p>
+
+<p>In spite of being well developed for more than 50 years, classical tomography
+is rarely used.  This is because it has a significant limitation:  the interfering
+objects are not <i>removed</i> from the image, only <i>blurred</i>.  The resulting image
+quality is usually too poor to be of practical use.  The long sought solution was
+a system that could create an image representing a 2D slice through a 3D object
+with <i>no</i> interference from other structures in the 3D object.  </p>
+
+<p>This problem was solved in the early 1970s with the introduction of a technique
+called <span style="font-weight: bold">computed tomography (CT)</span>.  CT revolutionized the medical x-ray field
+with its unprecedented ability to visualize the anatomic structure of the body. 
+Figure 25-13 shows a typical medical CT image.  Computed tomography was
+originally introduced to the marketplace under the names <i>Computed Axial
+Tomography</i> and <i>CAT scanner</i>.  These terms are now frowned upon in the
+medical field, although you hear them used frequently by the general public.  </p>
+
+<p>Figure 25-14 illustrates a simple geometry for acquiring a CT slice through the
+center of the head.   A narrow pencil beam of x-rays is passed from the x-ray
+source to the x-ray detector.  This means that the measured value at the detector
+is related to the total amount of material placed <i>anywhere</i></p>
+
+<div style="text-align: center; margin: 20px;"><img src="/graphics/F_25_13.gif" border="0" alt=""></img></div>
+
+<p>along the beam's path.  Materials such as bone and teeth block more of the x-rays, resulting in a lower signal compared to soft tissue and fat.  As shown in the
+illustration, the source and detector assemblies are translated to acquire a <span style="font-weight: bold">view</span>
+(CT jargon) at this particular angle.  While this figure shows only a single view
+being acquired, a complete CT scan requires 300 to 1000 views taken at
+rotational increments of about 0.3&deg; to 1.0&deg;.  This is accomplished by mounting
+the x-ray source and detector on a rotating gantry that surrounds the patient.  A
+key feature of CT data acquisition is that x-rays pass <i>only</i> through the slice of
+the body being examined.  This is  unlike classical tomography where x-rays are
+passing through structures that you try to suppress in the final image. 
+Computed tomography doesn't allow information from irrelevant locations to
+even enter the acquired data. </p>
+
+<div style="text-align: center; margin: 20px;"><img src="/graphics/F_25_14.gif" border="0" alt=""></img></div>
+
+<p>Several preprocessing steps are usually needed before the image reconstruction
+can take place.  For instance, the logarithm must be taken of each x-ray
+measurement.  This is because x-rays decrease in intensity exponentially as they
+pass through material.  Taking the logarithm provides a signal that is linearly
+related to the characteristics of the material being measured.   Other
+preprocessing steps are used to compensate for the use of <i>polychromatic</i> (more
+than one energy) x-rays, and <i>multielement</i> detectors (as opposed to the single
+element shown in Fig. 25-14).  While these are a key step in the overall
+technique, they are not related to the reconstruction algorithms and we won't
+discuss them further.  </p>
+
+<p>Figure 25-15 illustrates the relationship between the measured views and the
+corresponding image.  Each sample acquired in a CT system is equal to the sum
+of the image values along a ray pointing to that sample.  For example, view 1
+is found by adding all the pixels in each row.  Likewise, view 3 is found by
+adding all the pixels in each column.  The other views, such as view 2, sum the
+pixels along rays that are at an angle.</p>
+
+<p>There are four main approaches to calculating the slice image given the set of
+its views.  These are called <span style="font-weight: bold">CT reconstruction algorithms</span>.  The first method is
+totally impractical, but provides a better understanding of the problem.  It is
+based on solving many <span style="font-weight: bold">simultaneous linear equations</span>.  One equation can be
+written for each measurement.   That is, a particular sample in a particular
+profile is the sum of a particular group of pixels in the image.  To calculate 
+unknown variables (i.e., the  image pixel values), there must be  independent
+equations, and therefore <i>N</i><sup>2</sup> measurements.   Most CT scanners acquire about
+50% more samples than rigidly required by this analysis.  For example, to
+reconstruct a 512&times;512 image, a system might take 700 views with 600 samples
+in each view.  By making the problem <i>overdetermined</i> in this manner, the final
+image has reduced noise and artifacts.  The problem with this first method of CT
+reconstruction is computation time.  Solving several hundred thousand
+simultaneous linear equations is an daunting task.</p>
+
+<p>The second method of CT reconstruction uses <span style="font-weight: bold">iterative</span> techniques to calculate
+the  final image in small steps.  There are several variations of this method: the
+Algebraic Reconstruction Technique (ART),  Simultaneous Iterative
+Reconstruction Technique (SIRT), and Iterative Least Squares Technique
+(ILST).  The difference between these methods is how the successive
+corrections are made: ray-by-ray, pixel-by-pixel, or simultaneously correcting
+the entire data set, respectively.   As an example of these techniques, we will
+look at ART.</p>
+
+<p>To start the ART algorithm, all the pixels in the image array are set to some
+arbitrary value.   An iterative procedure is then used to gradually change the
+image array to correspond to the profiles.  An iteration cycle consists of looping
+through each of the measured data points.  For each measured value, the
+following question is asked: <i> how can the pixel values in the array be changed
+to make them consistent with this particular measurement</i>?  In other words, the
+measured sample is compared with the </p>
+
+<div style="text-align: center; margin: 20px;"><img src="/graphics/F_25_15.gif" border="0" alt=""></img></div>
+
+<p>sum of the image pixels along the ray pointing to the sample.  If the ray sum is
+lower than the measured sample, all the pixels along the ray are increased in
+value.  Likewise, if the ray sum is higher than the measured sample, all of the
+pixel values along the ray are decreased.  After the first complete iteration
+cycle,  there will still be an error between the ray sums and the measured values.
+This is because the changes made for any one measurement disrupts all the
+previous corrections made.  The idea is that the errors become smaller with
+repeated iterations until the image converges to the proper solution.</p>
+
+<p>Iterative techniques are generally slow, but they are useful when better
+algorithms are not available.  In fact, ART was used in the first commercial
+medical CT scanner released in 1972, the EMI Mark I.  We will revisit iterative
+techniques in the next chapter on neural networks.  Development of the third
+and forth methods have almost entirely replaced iterative techniques in
+commercial CT products.</p>
+
+<p>The last two reconstruction algorithms are based on formal mathematical
+solutions to the problem.  These are elegant examples of DSP.  The third
+method is called <span style="font-weight: bold">filtered backprojection</span>.  It is a modification of an older </p>
+
+<div style="text-align: center; margin: 20px;"><img src="/graphics/F_25_16.gif" border="0" alt=""></img></div>
+				 
+<p>technique, called <span style="font-weight: bold">backprojection</span> or<span style="font-weight: bold"> simple backprojection.</span>  Figure 25-16
+shows that simple backprojection is a common sense approach, but very
+unsophisticated.    An individual sample is backprojected by setting all the
+image pixels along the ray pointing to the sample to the same value.   In less
+technical terms, a backprojection is formed by <i>smearing</i> each view back through
+the image in the direction it was originally acquired.  The final backprojected
+image is then taken as the sum of all the backprojected views. </p>
+
+<p>While backprojection is conceptually simple, it does not correctly solve the
+problem.  As shown in (b), a backprojected image is very <i>blurry</i>.  A single point
+in the <i>true</i> image is reconstructed as a circular region that decreases in intensity
+away from the center.   In more formal terms, the point spread function of
+backprojection is circularly symmetric, and decreases as the reciprocal of its
+radius.</p>
+
+<p>Filtered backprojection is a technique to correct the blurring encountered in
+simple backprojection.  As illustrated in Fig. 25-17, each view is <i>filtered</i> before
+the backprojection to counteract the blurring PSF.  That is, each of the one-dimensional views is convolved with a one-dimensional filter kernel to create
+a set of <i>filtered views</i>.  These filtered views are then backprojected to provide
+the reconstructed image, a close approximation to the "correct" image.  In fact,
+the image produced by filtered backprojection is <i>identical</i></p>
+
+
+<div style="text-align: center; margin: 20px;"><img src="/graphics/F_25_17.gif" border="0" alt=""></img></div>
+
+<p>to the "correct" image when there are an <i>infinite</i> number of views and an <i>infinite</i>
+number of points per view. </p>
+
+<p>The filter kernel used in this technique will be discussed shortly.  For now,
+notice how the profiles have been changed by the filter.  The image in this
+example is a uniform white circle surrounded by a black background (a pillbox). 
+Each of the acquired views has a flat background with a rounded region
+representing the white circle.  Filtering changes the views in two significant
+ways.  First, the top of the pulse is made flat, resulting in the final
+backprojection creating a <i>uniform</i> signal level within the circle.  Second,
+negative spikes have been introduced at the sides of the pulse.  When
+backprojected, these negative regions counteract the blur.</p>
+
+<p>The fourth method is called <span style="font-weight: bold">Fourier reconstruction</span>.  In the spatial domain, CT
+reconstruction involves the relationship between a two-dimensional image and
+its set of one-dimensional views.  By taking the two-dimensional Fourier
+transform of the image and the one-dimensional Fourier transform of each of its
+views, the problem can be examined in the frequency domain.  As it turns out,
+the relationship between an image and its views is far simpler in the frequency
+domain than in the spatial domain.  The frequency domain analysis of this
+problem is a milestone in CT technology called the <span style="font-weight: bold">Fourier slice theorem</span>.   </p>
+
+<p>Figure 25-18 shows how the problem looks in both the spatial and the frequency
+domains.  In the spatial domain, each view is found by integrating the image
+along rays at a particular angle.  In the frequency domain, the image spectrum
+is represented in this illustration by a two-dimensional grid.  The spectrum of
+each view (a one-dimensional signal) is represented by a dark line
+superimposed on the grid.  As shown by the positioning of the lines on the grid,
+the Fourier slice theorem states that the spectrum of a view is identical to the
+values along a line (slice) through the image spectrum.  For instance, the
+spectrum of view 1 is the same as the center column of the image spectrum, and
+the spectrum of view 3 is the same as the center row of the image spectrum. 
+Notice that the spectrum of each view is positioned on the grid at the same angle
+that the view was originally acquired.  All these frequency spectra include the
+negative frequencies and are displayed with zero frequency at the center. </p>
+
+<p>Fourier reconstruction of a CT image requires three steps.  First, the one-dimensional FFT is taken of each view.  Second, these view spectra are used to
+calculate the two-dimensional frequency spectrum of the image, as outlined by
+the Fourier slice theorem.  Since the view spectra are arranged <i>radially</i>, and the
+correct image spectrum is arranged <i>rectangularly</i>, an interpolation routine is
+needed to make the conversion. Third, the inverse FFT is taken of the image
+spectrum to obtain the reconstructed image.</p>
+
+
+<div style="text-align: center; margin: 20px;"><img src="/graphics/F_25_18.gif" border="0" alt=""></img></div>
+
+<div style="text-align: center; margin: 20px;"><img src="/graphics/F_25_19.gif" border="0" alt=""></img></div>
+
+
+<p>This "radial to rectangular" conversion is also the key for understanding filtered
+backprojection.  The radial arrangement is the spectrum of the backprojected
+image, while the rectangular grid is the spectrum of the correct image.  If we
+compare one small region of the radial spectrum with the corresponding region
+of the rectangular grid, we find that the sample values are identical.  However,
+they have a different <i>sample density</i>. The correct spectrum has uniformly spaced
+points throughout, as shown by the even spacing of the rectangular grid.  In
+comparison, the backprojected spectrum has a higher sample density near the
+center because of its radial arrangement.  In other words, the spokes of a wheel
+are closer together near the hub.  This issue does not affect Fourier
+reconstruction because the interpolation is from the <i>values</i> of the nearest
+neighbors, not their <i>density</i>. </p>
+
+<p>The filter in filtered backprojection cancels this unequal sample density.  In
+particular, the frequency response of the filter must be the <i>inverse</i> of the sample
+density.  Since the backprojected spectrum has a density of 1/<i>f</i>, the appropriate
+filter has a frequency response of .   This frequency response is shown
+in Fig. 25-19a.  The filter kernel is then found by taking the inverse Fourier
+transform, as shown in (b).  Mathematically, the filter kernel is given by:</p>
+
+<div style="text-align: center; margin: 20px;"><img src="/graphics/E_25_2.gif" border="0" alt=""></img></div>
+
+<p>Before leaving the topic of computed tomography, it should be mentioned that
+there are several similar imaging techniques in the medical field.  All  use
+extensive amounts of DSP.  <span style="font-weight: bold">Positron emission tomography (PET)</span> involves
+injecting the patient with a mildly radioactive compound that emits <i>positrons</i>. 
+Immediately after emission, the positron annihilates with an electron, creating
+two gamma rays that exit the body in exactly opposite directions. Radiation
+detectors placed around the patient look for these back-to-back gamma rays,
+identifying the location of the <i>line</i> that the gamma rays traveled along.  Since
+the point where the gamma rays were created must be somewhere along this
+line, a reconstruction algorithm similar to computed tomography can be used. 
+ This results in an image that looks similar to CT, except that <i>brightness</i> is
+related to the amount of the radioactive material present at each location.  A
+unique advantage of PET is that the radioactive compounds can be attached to
+various substances used by the body in some manner, such as glucose.  The
+reconstructed image is then related to the concentration of this biological
+substance.  This allows the imaging of the body's <i>physiology</i> rather than simple
+<i>anatomy</i>.  For example, images can be produced showing which portions of the
+human brain are involved in various mental tasks.  </p>
+
+<p>A more direct competitor to computed tomography is <span style="font-weight: bold">magnetic resonance
+imaging (MRI)</span>, which is now found in most major hospitals.  This technique
+was originally developed under the name <span style="font-weight: bold">nuclear magnetic resonance (NMR)</span>. 
+The name change was for public relations when local governments protested the
+use of anything <i>nuclear</i> in their communities.  It was often an impossible task
+to educate the public that the term <i>nuclear</i> simply referred to the fact that all
+atoms contain a <i>nucleus</i>.   An MRI scan is conducted by placing the patient in
+the center of a powerful magnet.  Radio waves in conjunction with the magnetic
+field cause selected nuclei in the body to resonate, resulting in the emission of
+secondary radio waves. These secondary radio waves are digitized and form the
+data set used in the MRI reconstruction algorithms.   The result is a set of
+images that appear very similar to computed tomography.   The advantages of
+MRI are numerous: good soft tissue discrimination, flexible slice selection, and
+not using potentially dangerous x-ray radiation.   On the negative side, MRI is
+a more expensive technique than CT, and poor for imaging bones and other hard
+tissues.  CT and MRI will be the mainstays of medical imaging for many years
+to come.</p></div></p>			
+
+		</div>
+		<div class="clear"><!-- --></div>
+		
+
+	</div>
+</div>
+
+<!-- Footer -->
+
+<div id="footer">
+	<a href="http://www.dspguide.com">Home</a> | <a href="http://www.dspguide.com/pdfbook.htm">The Book by Chapters</a> | <a href="http://www.dspguide.com/about.htm">About the Book</a> | <a href="http://www.dspguide.com/swsmith.htm">Steven W. Smith</a> | <a href="http://www.dsprelated.com/blogs-1/nf/Steve_Smith.php">Blog</a> | <a href="http://www.dspguide.com/contact.htm">Contact</a>
+	<br />
+	Copyright © 1997-2011 by California Technical Publishing
+</div>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-1774944-11");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+</body>
+</html>

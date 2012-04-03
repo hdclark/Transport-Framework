@@ -1,0 +1,10 @@
+exit
+
+
+ These Lua scripts use hard-coded references to log files in /tmp/. They can be run from any
+directory. They spit their output to the same directory.
+
+ Modify them as needed for other simulations. They are not really designed to be as flexible
+as the rest of Project - Transport because many types of analysis could be done on the output
+data. For instance, Brachytherapy simulation would not follow the same data flow as CT 
+reconstruction, arbitrary dose delivery, or linac wasteage simulation.

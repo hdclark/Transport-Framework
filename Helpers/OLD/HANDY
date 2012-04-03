@@ -1,0 +1,7 @@
+exit
+
+# For plotting the averaged bin data from question 3 (correct question???!?!)
+./Bin_Averager.lua < /tmp/Transport_Ques_3.plot > /tmp/plotme
+
+# For plotting the energy spectrum, arranged into bins.
+./Spectrum_binner.lua < /tmp/plotme  > /tmp/plotme2

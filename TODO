@@ -1,0 +1,4 @@
+
+# Fix super-unwieldy notation.
+- change all 'get_relativistic_three_momentum3' to 'get_relativistic_momentum3'
+- change all 'set_relativistic_three_momentum3' to 'set_relativistic_momentum3'

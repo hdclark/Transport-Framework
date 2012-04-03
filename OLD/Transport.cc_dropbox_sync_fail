@@ -1,0 +1,629 @@
+//Transport.cc - The main entrypoint into the code. See the README file for general information.
+
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
+
+#include <random>     //We use this for PRNG's.
+
+//#include <dlfcn.h> //Used for dlopen, etc.. Dynamic library loading.
+//#include <functional> //Useful for binding ("currying") functions. Used for PRNG.
+
+#include "./Misc.h"  //Various utilities. FUNCINFO, FUNCERR, etc..
+#include "./Dynamic_Loading.h" //Routines for dynamically loading shared libraries.
+#include "./Typedefs.h"  //Typedefs for the dynamic libraries. These let us slightly more safely cast function pointers.
+
+#include "./MyMath.h" //vec3, etc..
+#include "./Structs.h" //vec4, etc.. 
+
+#include "./Constants.h"
+
+bool VERBOSE = false;
+const std::string VERSION("0.0.1 - Extreme Beta Version - Use at your own risk!");
+
+//Passed in as arguments.
+long int random_seed = 12345677; //Pick a prime
+std::vector<void *> open_libraries;  //Keeps track of opened libraries. We need to keep them open until we are done.
+unsigned char beam_type; //Which type of particle should come from the beam source. Types are listed in Constants.cc.
+double smallest_feature = 0.1;     //The smallest feature in the geometry - useful for transporting particles through a vacuum in a sensible way. This is overwritten by geometry, if it exists in the module!
+
+
+//----------------------------------------------------------------------------------------------------
+//------------------------------------ Dynamically loaded functions ----------------------------------
+//----------------------------------------------------------------------------------------------------
+//These function types (which, more precisely, define function signatures only) are typedefs which are in Typedefs.h.
+FUNCTION_PRNG_source          PRNG_source; //A pseudo-random number generator source/iterator function.
+FUNCTION_energy_distribution  beam_energy_distribution; //The beam-source energy distribution. (Not collision distribution.)
+//FUNCTION_get_position         beam_position; //Returns the beam source outlet (ie. the source point.)
+FUNCTION_set_position         set_beam_position; //Lets us adjust the beam source outlet (ie. the source point.)
+FUNCTION_get_orientation      get_new_orientation; //Gets a new orientation unit vector for a particle ejected from the source outlet. (holds the angular distribution of the source).
+FUNCTION_random_orientation   get_random_orientation; //Gets a uniformly-distributed orientation unit vector3.
+//FUNCTION_geometry_type        which_material; //Returns the char value corresponding to the material at a point in space.
+FUNCTION_particle_factory     photon_factory; //Derived class factory function - creates a Photon class instance on the heap.
+//FUNCTION_particle_factory     positron_factory;
+FUNCTION_particle_factory     electron_factory;
+
+FUNCTION_mean_free_path       mean_free_path; //Given the particle in question, this returns the mean free path for a particluar material.
+FUNCTION_which_interaction    which_interaction_water; //Returns the unsigned char indicating the type of interaction a given particle will undergo, given a clamped uniform random.
+FUNCTION_mfp_and_which_interaction  water_mfp_and_which_interaction; //Gets both mfp and the interaction but only evaluates the mass attenuation coefficients once.
+FUNCTION_particle_sink        particle_sink;  //Used to pass unique_ptrs of instances of base_particle for memory management routines.
+FUNCTION_remaining_size       remaining_size; //Returns the number of additional particles which can be handled. (Do not push too hard!)
+FUNCTION_get_next_particle    next_particle;  //Returns a unique_ptr to the next active particle in memory.
+
+FUNCTION_scatter_routine      scatter_coherent; //Implements the Coherent scattering routine. 
+FUNCTION_scatter_routine      scatter_compton; //Implements the Compton scattering routine. 
+FUNCTION_scatter_routine      scatter_photoelectric; //Implements the photoelectric effect ("scatter") routine. 
+FUNCTION_scatter_routine      scatter_pair;  //Implements the Pair production scattering routine.
+FUNCTION_scatter_routine      scatter_localdump; //Implements the local energy dump ("scatter") routine. 
+FUNCTION_scatter_routine      scatter_none;  //Implements a 'virtual' interaction where nothing happens.
+FUNCTION_scatter_routine      scatter_detect; //Implements a detector event - particle has hit a detector.
+
+//Testing - Water/Photons.
+FUNCTION_mass_coefficient_X   compton_mass_attenuation;
+FUNCTION_mass_coefficient_X   coherent_mass_attenuation;
+FUNCTION_mass_coefficient_X   pair_mass_attenuation;
+FUNCTION_mass_coefficient_X   photoelectric_mass_attenuation;
+
+
+//This is used to pass the list of loaded functions around to dynamically loaded modules (and other routines
+// so as to make function calling as homogeneous as possible.)
+struct Functions  Loaded_Funcs;
+
+//----------------------------------------------------------------------------------------------------
+//------------------------------------- Entry into program here --------------------------------------
+//----------------------------------------------------------------------------------------------------
+int main(int argc, char *argv[]){
+
+    //  INCOMING:      -libraries which need to be loaaded,
+    //                 -seed value (if desired)
+    //                 -verbosity
+    //                 -beam type (what we want to come from the beam source)
+
+    std::vector<std::string> libraries;
+    //libraries.push_back("/home/hal/Dropbox/Project - Transport/lib_beams.so");
+    //libraries.push_back("./lib_photons.so");
+    // etc..
+
+
+    libraries.push_back("./lib_photons.so");
+    libraries.push_back("./lib_electrons.so");
+    libraries.push_back("./lib_positrons.so");
+    libraries.push_back("./lib_random_MT.so");
+    libraries.push_back("./lib_memory.so");
+    libraries.push_back("./lib_coherent.so");
+    libraries.push_back("./lib_photoelectric.so");
+    libraries.push_back("./lib_compton.so");
+    libraries.push_back("./lib_pair.so");
+    libraries.push_back("./lib_no_interaction.so");
+    libraries.push_back("./lib_localdump.so");
+
+//--------------- Inf Water tank setup  -----------------------------
+//    libraries.push_back("./lib_water_fitted.so");
+    libraries.push_back("./lib_water_csplines.so");
+//    libraries.push_back("./lib_water_linear.so");
+    libraries.push_back("./lib_beam_6MV.so");
+//    libraries.push_back("./lib_beam_6MV_downward.so");
+    libraries.push_back("./lib_geometry_inf_water.so");
+//    libraries.push_back("./lib_geometry_water_slab.so");
+    libraries.push_back("./lib_logging.so");
+
+    libraries.push_back("./lib_detect.so");    //Not actually needed, but needs to be here for sanity checks.
+
+/*
+//--------------- CT geometry  -----------------------------
+//    libraries.push_back("./lib_water_fitted.so");
+    libraries.push_back("./lib_water_csplines.so");
+//    libraries.push_back("./lib_water_linear.so");
+    libraries.push_back("./lib_beam_xray_N7599_downward.so");
+    libraries.push_back("./lib_geometry_CT_imager.so");
+    libraries.push_back("./lib_logging.so");
+    libraries.push_back("./lib_detect.so");
+*/
+
+    //Load in all libraries in the libraries string vector.
+    //Program will simply halt if the file is not found in any of the usual places!
+    for(std::string library_fullpath : libraries){
+        void *loaded_library = load_library(library_fullpath);
+    
+        if(loaded_library != NULL){
+            open_libraries.push_back( loaded_library );
+            std::string FileType;
+            std::string ParticleType;
+            std::string MediumType;
+            std::string InteractionType;
+
+
+            //--------------------------------- Set up generic module things ----------------------------------
+            //First, enforce our verbosity level on the module. 
+            // NOTE: We will still (possibly) get verbose messages prior to calling this. The way to fix this is not worth the effort.
+            if(check_for_item_in_library( loaded_library, "toggle_verbosity")){
+                FUNCTION_toggle_verbosity_t loaded_function = reinterpret_cast<FUNCTION_toggle_verbosity_t>(load_item_from_library(loaded_library, "toggle_verbosity") );
+                loaded_function( VERBOSE );
+            } 
+
+            //Load the file type identifier string.
+            if(check_for_item_in_library( loaded_library, "FILE_TYPE")){
+                FileType = *reinterpret_cast<std::string *>(load_item_from_library(loaded_library, "FILE_TYPE"));
+            }
+ 
+            //Load the particle type identifier string.
+            if(check_for_item_in_library( loaded_library, "PARTICLE_TYPE")){
+                ParticleType = *reinterpret_cast<std::string *>(load_item_from_library(loaded_library, "PARTICLE_TYPE"));
+            }   
+        
+            //Load the medium type identifier string.
+            if(check_for_item_in_library( loaded_library, "MEDIUM_TYPE")){
+                MediumType = *reinterpret_cast<std::string *>(load_item_from_library(loaded_library, "MEDIUM_TYPE"));
+            }
+
+             //Load the interaction type identifier string.
+            if(check_for_item_in_library( loaded_library, "INTERACTION_TYPE")){
+                InteractionType = *reinterpret_cast<std::string *>(load_item_from_library(loaded_library, "INTERACTION_TYPE"));
+            }
+
+            //------------------------------- Set up the random number generator -------------------------------
+            if(FileType == "PRNG"){
+                //Seed the generator. It will be randomly (non-reproduceably) seeded otherwise.
+                if(check_for_item_in_library( loaded_library, "init_explicit_seed")){
+                    FUNCTION_init_explicit_seed PRNG_seed = reinterpret_cast<FUNCTION_init_explicit_seed>(load_item_from_library(loaded_library, "init_explicit_seed") );
+                    PRNG_seed(123456);
+                }
+   
+                //Grab the source/iterator function.
+                if(check_for_item_in_library( loaded_library, "source")){
+                    PRNG_source = reinterpret_cast<FUNCTION_PRNG_source>(load_item_from_library(loaded_library, "source") );
+                    Loaded_Funcs.PRNG_source = reinterpret_cast<FUNCTION_PRNG_source>(load_item_from_library(loaded_library, "source") );
+                }
+
+                //Get the random orientation function. Note that this is separate from the beam orientation, which may or
+                // may not be random (and has a different signature!)
+                if(check_for_item_in_library( loaded_library, "get_random_orientation")){
+                    get_random_orientation = reinterpret_cast<FUNCTION_random_orientation>(load_item_from_library(loaded_library, "get_random_orientation") );
+                    Loaded_Funcs.get_random_orientation = reinterpret_cast<FUNCTION_random_orientation>(load_item_from_library(loaded_library, "get_random_orientation") );
+                }
+
+            //----------------------------------- Set up memory management -------------------------------------
+            }else if(FileType == "MEMORY"){
+                //Initialize the module, presumably to allocate space, prep the database, or nullify the index.
+//                if(check_for_item_in_library( loaded_library, "geometry_type")){
+//                    which_material = reinterpret_cast<FUNCTION_geometry_type>(load_item_from_library(loaded_library, "geometry_type") );
+//                }
+
+                //Grab the sink (aka "pass-to-memory-scheme") function.
+                if(check_for_item_in_library( loaded_library, "particle_sink")){
+                    particle_sink = reinterpret_cast<FUNCTION_particle_sink>(load_item_from_library(loaded_library, "particle_sink") );
+                    Loaded_Funcs.particle_sink = reinterpret_cast<FUNCTION_particle_sink>(load_item_from_library(loaded_library, "particle_sink") );
+                } 
+
+                //Grab the free-space indicator function - returns the number of *particles* which can be stored (approximately.)
+                if(check_for_item_in_library( loaded_library, "how_much_more_room")){
+                    remaining_size = reinterpret_cast<FUNCTION_remaining_size>(load_item_from_library(loaded_library, "how_much_more_room") );
+                }
+
+                //Grab the next particle iterator (source) function.
+                if(check_for_item_in_library( loaded_library, "get_next_particle")){
+                    next_particle = reinterpret_cast<FUNCTION_get_next_particle>(load_item_from_library(loaded_library, "get_next_particle") );
+                }
+
+
+            //---------------------------------- Set up the beam geometry --------------------------------------
+            }else if(FileType == "BEAM"){
+                //Grab the beam position get/set functions.
+                if(check_for_item_in_library( loaded_library, "get_position")){
+                    Loaded_Funcs.beam_position = reinterpret_cast<FUNCTION_get_position>(load_item_from_library(loaded_library, "get_position"));
+                }
+                if(check_for_item_in_library( loaded_library, "set_position")){
+                    set_beam_position = reinterpret_cast<FUNCTION_set_position>(load_item_from_library(loaded_library, "set_position"));
+                }
+
+                //Grab the beam orientation distribution function.
+                if(check_for_item_in_library( loaded_library, "get_orientation")){
+                    get_new_orientation = reinterpret_cast<FUNCTION_get_orientation>(load_item_from_library(loaded_library, "get_orientation"));
+                }
+
+                //Grab the energy distribution function.
+                if(check_for_item_in_library( loaded_library, "energy_distribution")){
+                    beam_energy_distribution = reinterpret_cast<FUNCTION_energy_distribution>(load_item_from_library(loaded_library, "energy_distribution") );
+                }
+
+            //------------------------------ Set up the geometry bounding boxes --------------------------------
+            }else if(FileType == "GEOMETRY"){
+                //Grab the material bounding box function.
+                if(check_for_item_in_library( loaded_library, "geometry_type")){
+                    Loaded_Funcs.which_material = reinterpret_cast<FUNCTION_geometry_type>(load_item_from_library(loaded_library, "geometry_type") );
+                }
+
+                //Update the smallest_feature to that of the geometry. This will help set the length scale for vacuum transport.
+                if(check_for_item_in_library( loaded_library, "SMALLEST_FEATURE")){
+                    smallest_feature = *reinterpret_cast<double *>(load_item_from_library(loaded_library, "SMALLEST_FEATURE"));
+                }
+
+
+            //------------------------------------- Set up the Materials ---------------------------------------
+            }else if(MediumType == "WATER"){
+                //Grab the mass coefficient interpolation routines (for testing!) 
+                if(check_for_item_in_library( loaded_library, "photon_mass_coefficient_coherent")){
+                    coherent_mass_attenuation = reinterpret_cast<FUNCTION_mass_coefficient_X>(load_item_from_library(loaded_library, "photon_mass_coefficient_coherent") );
+                }
+                if(check_for_item_in_library( loaded_library, "photon_mass_coefficient_compton")){
+                    compton_mass_attenuation  = reinterpret_cast<FUNCTION_mass_coefficient_X>(load_item_from_library(loaded_library, "photon_mass_coefficient_compton") );
+                }
+                if(check_for_item_in_library( loaded_library, "photon_mass_coefficient_pair_triplet")){
+                    pair_mass_attenuation     = reinterpret_cast<FUNCTION_mass_coefficient_X>(load_item_from_library(loaded_library, "photon_mass_coefficient_pair_triplet") );
+                }
+                if(check_for_item_in_library( loaded_library, "photon_mass_coefficient_photoelectric")){
+                    photoelectric_mass_attenuation = reinterpret_cast<FUNCTION_mass_coefficient_X>(load_item_from_library(loaded_library, "photon_mass_coefficient_photoelectric") );
+                }
+
+                //Grab the mean-free-path function.
+                if(check_for_item_in_library( loaded_library, "mean_free_path")){
+                    mean_free_path = reinterpret_cast<FUNCTION_mean_free_path>(load_item_from_library(loaded_library, "mean_free_path") );
+                }
+
+                //Grab the particle interaction distribution.
+                if(check_for_item_in_library( loaded_library, "which_interaction")){
+                    which_interaction_water = reinterpret_cast<FUNCTION_which_interaction>(load_item_from_library(loaded_library, "which_interaction") );
+                }
+
+                //Grab the mean-free-path AND particle interaction distribution function.
+                if(check_for_item_in_library( loaded_library, "mean_free_path_and_which_interaction")){
+                    water_mfp_and_which_interaction = reinterpret_cast<FUNCTION_mfp_and_which_interaction>(load_item_from_library(loaded_library, "mean_free_path_and_which_interaction") );
+                }
+
+
+            //--------------------------------- Set up the photon functions ------------------------------------
+            }else if(ParticleType == "PHOTON"){
+                //Grab the Photon particle class factory function. (It polymorphs the base_particle class!)
+                if(check_for_item_in_library( loaded_library, "particle_factory")){
+                    photon_factory = reinterpret_cast<FUNCTION_particle_factory>(load_item_from_library(loaded_library, "particle_factory") );
+                    Loaded_Funcs.photon_factory = reinterpret_cast<FUNCTION_particle_factory>(load_item_from_library(loaded_library, "particle_factory") );
+                }
+
+
+            //-------------------------------- Set up the electron functions -----------------------------------
+            }else if(ParticleType == "ELECTRON"){
+                //Grab the electron particle class factory function. (It polymorphs the base_particle class!)
+                if(check_for_item_in_library( loaded_library, "particle_factory")){
+                    electron_factory = reinterpret_cast<FUNCTION_particle_factory>(load_item_from_library(loaded_library, "particle_factory") );
+                    Loaded_Funcs.electron_factory = reinterpret_cast<FUNCTION_particle_factory>(load_item_from_library(loaded_library, "particle_factory") );
+                }
+
+
+            //-------------------------------- Set up the positron functions -----------------------------------
+            }else if(ParticleType == "POSITRON"){
+                //Grab the positron particle class factory function. (It polymorphs the base_particle class!)
+                if(check_for_item_in_library( loaded_library, "particle_factory")){
+                    Loaded_Funcs.positron_factory = reinterpret_cast<FUNCTION_particle_factory>(load_item_from_library(loaded_library, "particle_factory") );
+                }
+            
+
+            //---------------------------- Set up the Coherent scatter functions --------------------------------
+            }else if(InteractionType == "COHERENT"){
+                //Grab the coherent scattering routine.
+                if(check_for_item_in_library( loaded_library, "scatter")){
+                    scatter_coherent = reinterpret_cast<FUNCTION_scatter_routine>(load_item_from_library(loaded_library, "scatter") );
+                }
+
+
+            //---------------------------- Set up the Photoelectric effect functions --------------------------------
+            }else if(InteractionType == "PHOTOELECTRIC"){
+                //Grab the photoelectric effect "scattering" routine.
+                if(check_for_item_in_library( loaded_library, "scatter")){
+                    scatter_photoelectric = reinterpret_cast<FUNCTION_scatter_routine>(load_item_from_library(loaded_library, "scatter") );
+                }
+
+            //---------------------------- Set up the Compton scatter functions --------------------------------
+            }else if(InteractionType == "COMPTON"){
+                //Grab the Compton scattering routine.
+                if(check_for_item_in_library( loaded_library, "scatter")){
+                    scatter_compton = reinterpret_cast<FUNCTION_scatter_routine>(load_item_from_library(loaded_library, "scatter") );
+                }
+
+
+            //---------------------------- Set up the Pair production scatter functions --------------------------------
+            }else if(InteractionType == "PAIR"){
+                //Grab the pair-production "scattering" routine.
+                if(check_for_item_in_library( loaded_library, "scatter")){
+                    scatter_pair = reinterpret_cast<FUNCTION_scatter_routine>(load_item_from_library(loaded_library, "scatter") );
+                }
+
+
+            //---------------------------- Set up the no-interaction scatter functions --------------------------------
+            }else if(InteractionType == "NONE"){
+                //Grab the no-interaction "scattering" routine.
+                if(check_for_item_in_library( loaded_library, "scatter")){
+                    scatter_none = reinterpret_cast<FUNCTION_scatter_routine>(load_item_from_library(loaded_library, "scatter") );
+                }
+
+            //---------------------------- Set up the Localdump scatter functions --------------------------------
+            }else if(InteractionType == "LOCALDUMP"){
+                //Grab the coherent scattering routine.
+                if(check_for_item_in_library( loaded_library, "scatter")){
+                    scatter_localdump = reinterpret_cast<FUNCTION_scatter_routine>(load_item_from_library(loaded_library, "scatter") );
+                }
+
+            //---------------------------- Set up the Detection scatter functions --------------------------------
+            }else if(InteractionType == "DETECTION"){
+                //Grab the detection scattering routine.
+                if(check_for_item_in_library( loaded_library, "scatter")){
+                    scatter_detect = reinterpret_cast<FUNCTION_scatter_routine>(load_item_from_library(loaded_library, "scatter") );
+                }
+
+
+            //---------------------------- Set up the logging routines --------------------------------
+            }else if(FileType == "LOGGING"){
+                //Grab the particle graveyard routine.
+                if(check_for_item_in_library( loaded_library, "particle_graveyard")){
+                    Loaded_Funcs.particle_graveyard = reinterpret_cast<FUNCTION_particle_graveyard>(load_item_from_library(loaded_library, "particle_graveyard") );
+                }
+
+                //Grab the generic logging function.
+                if(check_for_item_in_library( loaded_library, "logging_generic")){
+                    Loaded_Funcs.generic_logging = reinterpret_cast<FUNCTION_generic_logging>(load_item_from_library(loaded_library, "logging_generic") );
+                }
+
+            }
+
+        }else{
+            FUNCWARN("Unable to load library \"" << library_fullpath << "\". Proceeding");
+        }
+
+    }   
+ 
+
+
+    //----------------------------------------------------------------------------------------------------
+    //----------------------------- Check to ensure it is safe to continue -------------------------------
+    //----------------------------------------------------------------------------------------------------
+    if( (beam_energy_distribution == NULL ) 
+          || (PRNG_source == NULL )
+          || (get_random_orientation == NULL )
+          || (Loaded_Funcs.beam_position == NULL )
+          || (set_beam_position == NULL )
+          || (Loaded_Funcs.which_material == NULL )
+          || (photon_factory == NULL )
+          || (electron_factory == NULL )
+          || (mean_free_path == NULL )
+          || (particle_sink == NULL )
+          || (next_particle == NULL )
+          || (Loaded_Funcs.get_random_orientation == NULL )
+          || (Loaded_Funcs.PRNG_source == NULL )
+          || (Loaded_Funcs.particle_sink == NULL )
+          || (Loaded_Funcs.photon_factory == NULL )
+          || (Loaded_Funcs.electron_factory == NULL )
+          || (Loaded_Funcs.positron_factory == NULL )
+          || (Loaded_Funcs.particle_graveyard == NULL )
+          || (scatter_coherent == NULL )
+          || (scatter_photoelectric == NULL )
+          || (scatter_compton == NULL )
+          || (scatter_pair == NULL )
+          || (scatter_localdump == NULL )
+          || (scatter_detect == NULL )
+          || (scatter_none == NULL )
+          || (which_interaction_water == NULL )
+
+          || (coherent_mass_attenuation == NULL )
+          || (compton_mass_attenuation == NULL )
+          || (photoelectric_mass_attenuation == NULL )
+          || (pair_mass_attenuation == NULL )
+      ){
+
+        FUNCERR("Do not have necessary information to continue - check modules were loaded properly");
+    }
+
+
+    //----------------------------------------------------------------------------------------------------
+    //----------------------------------- Bind functions, if desired -------------------------------------
+    //----------------------------------------------------------------------------------------------------
+    //auto new_beam_energy = std::bind(beam_energy_distribution,PRNG_source); 
+
+
+
+    //----------------------------------------------------------------------------------------------------
+    //----------------------------------- Perform some sanity checks -------------------------------------
+    //----------------------------------------------------------------------------------------------------
+
+    //Print out the mass attenuation coefficients for verification.
+    Loaded_Funcs.generic_logging("Q1") << "# Mass attenuation coefficients. " << std::endl;
+    Loaded_Funcs.generic_logging("Q1") << "#   Energy   Coherent   Compton   Photoelectric   Pair   Total " << std::endl;
+    for(double E=0.001001; E<=50.0; E *= 1.01){
+        double comp = compton_mass_attenuation(E);
+        double chnt = coherent_mass_attenuation(E);
+        double phot = photoelectric_mass_attenuation(E);
+        double pair = pair_mass_attenuation(E);
+        double tot = comp + chnt + phot + pair;
+        Loaded_Funcs.generic_logging("Q1") << E << " " << chnt << " " << comp << " " << phot << " " << pair << " " << tot << std::endl;
+    }
+
+    //Generates a large number of photons to check beam energy spectrum.
+    Loaded_Funcs.generic_logging("Sampled_Spectrum") << "# Sampled spectrum. Useful for direct (random) measurement of spectrum output from source." << std::endl;
+    Loaded_Funcs.generic_logging("Sampled_Spectrum") << "# Energy    <arbitrary number> " << std::endl;
+    for(size_t i=0; i<100000; ++i){
+        Loaded_Funcs.generic_logging("Sampled_Spectrum") << beam_energy_distribution( Loaded_Funcs ) << " " << i << std::endl;
+    }
+
+    /*
+    //Outputs the material type for a randomly-sampled geometry test for the CT_scanner geometry.
+    for(size_t i=0; i<100000; ++i){
+        const double x = 2.0*20.0*(PRNG_source()-0.5);
+        const double z = 2.0*20.0*(PRNG_source()-0.5);
+        const double y = 0;
+        std::cout << x << " " << y << " " << z << " " << (int)( Loaded_Funcs.which_material(vec3<double>(x,y,z)) ) << std::endl;
+    }
+    */
+
+    /*
+    //Outputs the material type for a randomly-sampled geometry test for the CT_scanner geometry. Close up zoom on the comb filter.
+    for(size_t i=0; i<10000; ++i){
+        const double x = 5.0*(2.0*PRNG_source()-1.0);
+        const double z = 0.5*(2.0*PRNG_source()-1.0) + 13.5;
+        const double y = 0;
+        std::cout << x << " " << y << " " << z << " " << (int)( Loaded_Funcs.which_material(vec3<double>(x,y,z)) ) << std::endl;
+    }
+    */
+
+    /*
+    //Outputs the material type for a path along the beam axis for the CT_scanner geometry.
+    for(double z = 20.0; z>-20.0; z-=0.1){
+        std::cout << 0.0 << " " << 0.0 << " " << z << " " << (int)( Loaded_Funcs.which_material(vec3<double>(0.0,0.0,z)) ) << std::endl;
+    }
+    */
+
+
+
+    //----------------------------------------------------------------------------------------------------
+    //------------------------------------- Perform the simulation ---------------------------------------
+    //----------------------------------------------------------------------------------------------------
+
+    //First, we create a bunch of photons at the beam position with a distribution of energy and orientation
+    // as indicated by the beam arrangement.
+    for(size_t i=0; i<2000000; ++i){
+        const double E   =  beam_energy_distribution( Loaded_Funcs );
+        vec3<double> pos =  Loaded_Funcs.beam_position();
+        vec3<double> mom =  get_new_orientation(PRNG_source(),PRNG_source(),PRNG_source()) * E;
+
+        std::unique_ptr<base_particle> temp = photon_factory(E, pos, mom);
+        temp->Interactions.push_back( an_interaction(Interactiontype::Creation, Material::Beam, E, pos));
+        particle_sink( std::move( temp ) );
+    }
+
+
+    //Now we cycle through the remaining particles until they have all deposited their energy somewhere.
+    std::unique_ptr<base_particle> current_particle = next_particle();
+//    vec3<double> pos_copy;  //If needed, to try speed up vec3<double> calculations.
+//    double step_factor;     //Used for variable-length ray casting through vacuum.
+    while(current_particle != nullptr){
+
+        //Move the particle this distance in the direction of the momentum vector.
+        vec3<double> pos = current_particle->get_position3();
+        const double E   = current_particle->get_energy();
+        vec3<double> dir = current_particle->get_relativistic_three_momentum3() / E; //Unit vector in direction of travel. //FIXME - only valid for photons!!
+
+        double dl;
+        unsigned char material = Loaded_Funcs.which_material(pos); //The *current* particle position, so we know which mfp to use.
+        unsigned char which_interaction;
+
+        //Determine the distance the photon will travel prior to next interaction and also which interaction type to perform.
+        if(material == Material::Beam){
+            FUNCERR("Particle detected in region of material 'beam'. This is not a geometrically accessible material. Please verify the geometry module and this code.");
+
+        }else if(material == Material::Black){
+            dl = 0.0;
+            which_interaction = Interactiontype::Disappear; //Particle will be completely removed and not logged.
+
+        }else if(material == Material::Vacuum){
+            dl = smallest_feature;  //This should look ahead to a non-vacuum region and set the mfp to that distance to speed up transport to interacting media..
+
+/*   //Test this scheme more when I have a better data flow :/
+            dl = 0.0;  
+            step_factor = 1.0;
+            pos_copy = pos; 
+
+            do {
+                if(step_factor <= 7.5){ //7.5 times the smallest feature.    ...this is probably a bad idea...
+                    step_factor += 0.47501*step_factor;   //Used to try reduce the total number of times we have to evaluate the geometry, whilst not overshooting the next material.
+                }    
+           
+                pos_copy += dir*smallest_feature * step_factor;
+                dl       += smallest_feature * step_factor;
+               
+            }while(Loaded_Funcs.which_material(pos_copy) != Material::Vacuum);
+
+            //Now back off one step so we remain in the material.
+            dl -= smallest_feature * step_factor;
+*/
+
+            which_interaction = Interactiontype::None;
+
+        }else if(material == Material::Air){
+            FUNCERR("This material type is not yet defined. Fix me first!");
+
+        }else if(material == Material::Water){
+            water_mfp_and_which_interaction( current_particle.get(), PRNG_source(), PRNG_source(), which_interaction, dl);
+
+        }else if(material == Material::Detector){
+            dl = 0.0;
+            which_interaction = Interactiontype::Detect; //Particle will be logged. in *typical* detector setups, we *only* log particles at the detector.
+
+        }else{
+            FUNCERR("Particle is in a region of unknown material. Verify the geometry module and this code.");
+        }
+
+        pos +=  dir*dl;
+        current_particle->set_position3( pos );
+
+
+        //Now I need to decide if the material has changed whilst moving through the MFP distance. If it did, maybe we should re-choose the interaction type.
+        //Maybe it is too much of a hassle/too costly to do so?
+/*
+        const unsigned char material2 = Loaded_Funcs.which_material(pos);
+        if(material != material2){
+            material = material2;
+
+
+        }
+*/
+
+
+        //if(VERBOSE)  FUNCINFO("Newly moved particle has E, position, momentum, and type: " << current_particle->get_energy() << " " << current_particle->get_position3() << " " << current_particle->get_relativistic_three_momentum3() << " " << (int)(current_particle->get_type()) );
+
+        //Mark the particle as having undergone the interaction it is about to undergo (so that we do not have to stick this in each interaction library..)
+        current_particle->Interactions.push_back( an_interaction( which_interaction, material, E, pos ) );     
+
+        //Send the particle into the interaction function. It takes ownership and will probably destroy it,
+        // so do not use the reference after this point.
+        if( which_interaction == Interactiontype::Compton ){
+            scatter_compton( std::move( current_particle ), Loaded_Funcs );
+
+        }else if( which_interaction == Interactiontype::Coherent ){
+            scatter_coherent( std::move( current_particle ), Loaded_Funcs );
+
+        }else if( which_interaction == Interactiontype::Photoelectric ){
+            scatter_photoelectric( std::move( current_particle ), Loaded_Funcs );
+
+        }else if( which_interaction == Interactiontype::Pair ){
+            scatter_pair( std::move( current_particle ), Loaded_Funcs );
+
+        }else if( which_interaction == Interactiontype::LocalDump ){
+            scatter_localdump( std::move( current_particle ), Loaded_Funcs );
+
+        }else if( which_interaction == Interactiontype::Detect ){
+            scatter_detect( std::move( current_particle ), Loaded_Funcs );
+
+        }else if( which_interaction == Interactiontype::None ){
+            scatter_none( std::move( current_particle ), Loaded_Funcs ); //This is here in case we want to log or cull particles.
+
+        }else if( which_interaction == Interactiontype::Disappear ){
+            //Particle will simply disappear right now. We do not log this - disappearance means we don't care about it.
+
+        }else{
+            FUNCERR("Instructed to perform an interaction (" << (int)(which_interaction) << ") which is unknown!");
+        }
+
+
+        //Grab the next available active particle.
+        current_particle = next_particle();
+    }
+
+
+
+    //----------------------------------------------------------------------------------------------------
+    //----------------------------------------- Exit and cleanup -----------------------------------------
+    //----------------------------------------------------------------------------------------------------
+
+    //Close all libraries which are open. When we do this, we lose the ability to call the functions we yanked from them.
+    for(void *i : open_libraries ){
+        close_library(i);
+    }
+
+    return 0;
+}
+
+
+
+
+
+
+
+

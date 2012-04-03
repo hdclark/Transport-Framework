@@ -1,0 +1,93 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 11.08.0 ] */
+
+/* [wxMaxima: page break    ] */
+
+/* [wxMaxima: comment start ]
+Coherent
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+f :     (1-exp(-243.457*x))/(1+exp(-243.457*x))^3.44416 * x^(-2)/19000;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+rat(f);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+ToC( rat(f) );
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: page break    ] */
+
+/* [wxMaxima: comment start ]
+Compton
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+A               : 0.0187389 ;
+B               : -1.1555  ;
+C               : 1600.34  ;
+D               : 2.18652  ;
+E               : 0.00254634 ;
+F               : -0.46798  ;
+G               : 0.0334034  ;
+H               : 0.357379  ;
+I               : 33.4605;
+f1 : (A)*(x**(B));
+f2 : (C)*(x**(D));
+f3 : (E)*(x**(F));
+f4 : (G)*(x**(H));
+
+g : I*(f1^(-1) + f2^(-1) + f3^(-1) + f4^(-1))^(-1);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+ToC( g );
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: page break    ] */
+
+/* [wxMaxima: comment start ]
+Pair production
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+A:0.142367;
+B:1.94953;
+C:2.60355e-05;
+D:0.0008;
+
+g :  0.01*(1.0-exp(-A*(x-1.022)))/(1.0+exp(-A*(x-1.022)))**B + C*(x-1.022) + D*exp(-0.07*(x-1.022-6.5)*(x-1.022-6.5));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+ToC( g);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: page break    ] */
+
+/* [wxMaxima: comment start ]
+Photoelectric effect
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+A: 1.1;
+	B: 3.2;
+	C: 550000;
+	D: 1200;
+
+f :  ((x**(-A))/C +  (x**(-B))/C) * (1.0-exp(-x*D))/(1.0+exp(-x*D));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+rat(f);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+ToC( rat(f));
+/* [wxMaxima: input   end   ] */
+
+/* Maxima can't load/batch files which end with a comment! */
+"Created with wxMaxima"$

@@ -1,0 +1,45 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 11.08.0 ] */
+
+/* [wxMaxima: comment start ]
+Have: MeV
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: comment start ]
+Volume of voxel = 0.5*0.5*0.5 cm^3
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: comment start ]
+Density of water = 1.0 g/cm^3
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+dV: 0.5*0.5*0.5/1000.0;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+..in kilograms
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: comment start ]
+1 MeV = 1000000*(1.6E-19) J
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+MeV: 1000000*(1.6E-19);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Each voxel needs to be divided by the mass and multiplied by the MeV conversion.
+   [wxMaxima: comment end   ] */
+
+/* [wxMaxima: input   start ] */
+MeV / dV;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: comment start ]
+Conversion factor is 1.28E-9 Gy    or   1.28E-7 cGy
+   [wxMaxima: comment end   ] */
+
+/* Maxima can't load/batch files which end with a comment! */
+"Created with wxMaxima"$

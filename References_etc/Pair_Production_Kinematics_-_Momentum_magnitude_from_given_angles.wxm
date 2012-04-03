@@ -1,0 +1,26 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 11.08.0 ] */
+
+
+/* [wxMaxima: input   start ] */
+linsolve([hn = PEN*cos(n)+ PEP*cos(p), 0  = PEN*sin(n) + PEP*sin(p)], [PEN, PEP]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+
+trigreduce(
+-(hn*sin(p))/(sin(n)*cos(p)-cos(n)*sin(p))
+
+);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+trigreduce(
+
+(hn*sin(n))/(sin(n)*cos(p)-cos(n)*sin(p))
+);
+/* [wxMaxima: input   end   ] */
+
+
+/* Maxima can't load/batch files which end with a comment! */
+"Created with wxMaxima"$

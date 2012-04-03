@@ -1,0 +1,880 @@
+desc: (none)
+cmd: ./transport
+time_unit: i
+#-----------
+snapshot=0
+#-----------
+time=0
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=1
+#-----------
+time=37707315
+mem_heap_B=1107088
+mem_heap_extra_B=203448
+mem_stacks_B=0
+heap_tree=peak
+n3: 1107088 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n0: 950400 0x402F660: particle_factory (Photons.cc:84)
+ n2: 121212 0x47385A4: particle_sink (new_allocator.h:92)
+  n0: 80292 in 6505 places, all below massif's threshold (01.00%)
+  n0: 40920 0x41A1481: (below main) (in /lib/libc-2.15.so)
+ n0: 35476 in 16 places, all below massif's threshold (01.00%)
+#-----------
+snapshot=2
+#-----------
+time=447442007
+mem_heap_B=962488
+mem_heap_extra_B=176680
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=3
+#-----------
+time=700432981
+mem_heap_B=898000
+mem_heap_extra_B=164728
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=4
+#-----------
+time=962791037
+mem_heap_B=848656
+mem_heap_extra_B=155600
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=5
+#-----------
+time=1334610063
+mem_heap_B=792064
+mem_heap_extra_B=145120
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=6
+#-----------
+time=1582458181
+mem_heap_B=759880
+mem_heap_extra_B=139160
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=7
+#-----------
+time=1903211926
+mem_heap_B=726940
+mem_heap_extra_B=133060
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=8
+#-----------
+time=2179390623
+mem_heap_B=706960
+mem_heap_extra_B=129360
+mem_stacks_B=0
+heap_tree=detailed
+n4: 706960 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n0: 610944 0x402F660: particle_factory (Photons.cc:84)
+ n1: 76764 0x47385A4: particle_sink (new_allocator.h:92)
+  n0: 76764 in 536351 places, all below massif's threshold (01.00%)
+ n0: 10382 in 15 places, all below massif's threshold (01.00%)
+ n1: 8870 0x400AE1E: _dl_new_object (in /lib/ld-2.15.so)
+  n1: 8870 0x40064A6: _dl_map_object_from_fd (in /lib/ld-2.15.so)
+   n1: 8870 0x40083FE: _dl_map_object (in /lib/ld-2.15.so)
+    n1: 8870 0x4012D7B: dl_open_worker (in /lib/ld-2.15.so)
+     n1: 8870 0x400ECED: _dl_catch_error (in /lib/ld-2.15.so)
+      n1: 8870 0x4050BE7: ??? (in /lib/libdl-2.15.so)
+       n1: 8870 0x400ECED: _dl_catch_error (in /lib/ld-2.15.so)
+        n0: 8870 0x0: ???
+#-----------
+snapshot=9
+#-----------
+time=2434150126
+mem_heap_B=690652
+mem_heap_extra_B=126340
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=10
+#-----------
+time=2851023621
+mem_heap_B=668188
+mem_heap_extra_B=122180
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=11
+#-----------
+time=3175260656
+mem_heap_B=653608
+mem_heap_extra_B=119480
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=12
+#-----------
+time=3381951401
+mem_heap_B=645616
+mem_heap_extra_B=118000
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=13
+#-----------
+time=3662602719
+mem_heap_B=633628
+mem_heap_extra_B=115780
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=14
+#-----------
+time=3903160296
+mem_heap_B=624664
+mem_heap_extra_B=114120
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=15
+#-----------
+time=4143718720
+mem_heap_B=617860
+mem_heap_extra_B=112860
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=16
+#-----------
+time=4504556772
+mem_heap_B=607492
+mem_heap_extra_B=110940
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=17
+#-----------
+time=4705021950
+mem_heap_B=601768
+mem_heap_extra_B=109880
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=18
+#-----------
+time=5025764859
+mem_heap_B=592372
+mem_heap_extra_B=108140
+mem_stacks_B=0
+heap_tree=detailed
+n4: 592372 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n0: 511776 0x402F660: particle_factory (Photons.cc:84)
+ n1: 64032 0x47385A4: particle_sink (new_allocator.h:92)
+  n0: 64032 in 1181617 places, all below massif's threshold (01.00%)
+ n1: 8870 0x400AE1E: _dl_new_object (in /lib/ld-2.15.so)
+  n1: 8870 0x40064A6: _dl_map_object_from_fd (in /lib/ld-2.15.so)
+   n1: 8870 0x40083FE: _dl_map_object (in /lib/ld-2.15.so)
+    n1: 8870 0x4012D7B: dl_open_worker (in /lib/ld-2.15.so)
+     n1: 8870 0x400ECED: _dl_catch_error (in /lib/ld-2.15.so)
+      n1: 8870 0x4050BE7: ??? (in /lib/libdl-2.15.so)
+       n1: 8870 0x400ECED: _dl_catch_error (in /lib/ld-2.15.so)
+        n0: 8870 0x0: ???
+ n0: 7694 in 15 places, all below massif's threshold (01.00%)
+#-----------
+snapshot=19
+#-----------
+time=5295712712
+mem_heap_B=585244
+mem_heap_extra_B=106820
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=20
+#-----------
+time=5573636816
+mem_heap_B=578656
+mem_heap_extra_B=105600
+mem_stacks_B=0
+heap_tree=detailed
+n4: 578656 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n0: 499680 0x402F660: particle_factory (Photons.cc:84)
+ n1: 62508 0x47385A4: particle_sink (new_allocator.h:92)
+  n0: 62508 in 1297123 places, all below massif's threshold (01.00%)
+ n1: 8870 0x400AE1E: _dl_new_object (in /lib/ld-2.15.so)
+  n1: 8870 0x40064A6: _dl_map_object_from_fd (in /lib/ld-2.15.so)
+   n1: 8870 0x40083FE: _dl_map_object (in /lib/ld-2.15.so)
+    n1: 8870 0x4012D7B: dl_open_worker (in /lib/ld-2.15.so)
+     n1: 8870 0x400ECED: _dl_catch_error (in /lib/ld-2.15.so)
+      n1: 8870 0x4050BE7: ??? (in /lib/libdl-2.15.so)
+       n1: 8870 0x400ECED: _dl_catch_error (in /lib/ld-2.15.so)
+        n0: 8870 0x0: ???
+ n0: 7598 in 15 places, all below massif's threshold (01.00%)
+#-----------
+snapshot=21
+#-----------
+time=5990530724
+mem_heap_B=569044
+mem_heap_extra_B=103820
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=22
+#-----------
+time=6268459799
+mem_heap_B=563428
+mem_heap_extra_B=102780
+mem_stacks_B=0
+heap_tree=detailed
+n4: 563428 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n0: 485952 0x402F660: particle_factory (Photons.cc:84)
+ n1: 60816 0x47385A4: particle_sink (new_allocator.h:92)
+  n0: 60816 in 1440052 places, all below massif's threshold (01.00%)
+ n1: 8870 0x400AE1E: _dl_new_object (in /lib/ld-2.15.so)
+  n1: 8870 0x40064A6: _dl_map_object_from_fd (in /lib/ld-2.15.so)
+   n1: 8870 0x40083FE: _dl_map_object (in /lib/ld-2.15.so)
+    n1: 8870 0x4012D7B: dl_open_worker (in /lib/ld-2.15.so)
+     n1: 8870 0x400ECED: _dl_catch_error (in /lib/ld-2.15.so)
+      n1: 8870 0x4050BE7: ??? (in /lib/libdl-2.15.so)
+       n1: 8870 0x400ECED: _dl_catch_error (in /lib/ld-2.15.so)
+        n0: 8870 0x0: ???
+ n0: 7790 in 15 places, all below massif's threshold (01.00%)
+#-----------
+snapshot=23
+#-----------
+time=6685345355
+mem_heap_B=555652
+mem_heap_extra_B=101340
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=24
+#-----------
+time=6963271259
+mem_heap_B=551764
+mem_heap_extra_B=100620
+mem_stacks_B=0
+heap_tree=detailed
+n4: 551764 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n0: 475776 0x402F660: particle_factory (Photons.cc:84)
+ n1: 59520 0x47385A4: particle_sink (new_allocator.h:92)
+  n0: 59520 in 1578385 places, all below massif's threshold (01.00%)
+ n1: 8870 0x400AE1E: _dl_new_object (in /lib/ld-2.15.so)
+  n1: 8870 0x40064A6: _dl_map_object_from_fd (in /lib/ld-2.15.so)
+   n1: 8870 0x40083FE: _dl_map_object (in /lib/ld-2.15.so)
+    n1: 8870 0x4012D7B: dl_open_worker (in /lib/ld-2.15.so)
+     n1: 8870 0x400ECED: _dl_catch_error (in /lib/ld-2.15.so)
+      n1: 8870 0x4050BE7: ??? (in /lib/libdl-2.15.so)
+       n1: 8870 0x400ECED: _dl_catch_error (in /lib/ld-2.15.so)
+        n0: 8870 0x0: ???
+ n0: 7598 in 15 places, all below massif's threshold (01.00%)
+#-----------
+snapshot=25
+#-----------
+time=7310680780
+mem_heap_B=545068
+mem_heap_extra_B=99380
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=26
+#-----------
+time=7588607872
+mem_heap_B=541720
+mem_heap_extra_B=98760
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=27
+#-----------
+time=8005498483
+mem_heap_B=535564
+mem_heap_extra_B=97620
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=28
+#-----------
+time=8283427490
+mem_heap_B=531676
+mem_heap_extra_B=96900
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=29
+#-----------
+time=8700319963
+mem_heap_B=525292
+mem_heap_extra_B=95708
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=30
+#-----------
+time=9061162699
+mem_heap_B=521416
+mem_heap_extra_B=95000
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=31
+#-----------
+time=9301725567
+mem_heap_B=517744
+mem_heap_extra_B=94320
+mem_stacks_B=0
+heap_tree=detailed
+n4: 517744 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n0: 445344 0x402F660: particle_factory (Photons.cc:84)
+ n1: 55740 0x47385A4: particle_sink (new_allocator.h:92)
+  n0: 55740 in 2014611 places, all below massif's threshold (01.00%)
+ n1: 8870 0x400AE1E: _dl_new_object (in /lib/ld-2.15.so)
+  n1: 8870 0x40064A6: _dl_map_object_from_fd (in /lib/ld-2.15.so)
+   n1: 8870 0x40083FE: _dl_map_object (in /lib/ld-2.15.so)
+    n1: 8870 0x4012D7B: dl_open_worker (in /lib/ld-2.15.so)
+     n1: 8870 0x400ECED: _dl_catch_error (in /lib/ld-2.15.so)
+      n1: 8870 0x4050BE7: ??? (in /lib/libdl-2.15.so)
+       n1: 8870 0x400ECED: _dl_catch_error (in /lib/ld-2.15.so)
+        n0: 8870 0x0: ???
+ n0: 7790 in 15 places, all below massif's threshold (01.00%)
+#-----------
+snapshot=32
+#-----------
+time=9662573602
+mem_heap_B=513856
+mem_heap_extra_B=93600
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=33
+#-----------
+time=10023417765
+mem_heap_B=509536
+mem_heap_extra_B=92800
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=34
+#-----------
+time=10384261676
+mem_heap_B=505648
+mem_heap_extra_B=92080
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=35
+#-----------
+time=10624824159
+mem_heap_B=502948
+mem_heap_extra_B=91580
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=36
+#-----------
+time=10985670906
+mem_heap_B=499492
+mem_heap_extra_B=90940
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=37
+#-----------
+time=11346517855
+mem_heap_B=495388
+mem_heap_extra_B=90180
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=38
+#-----------
+time=11587081644
+mem_heap_B=492688
+mem_heap_extra_B=89680
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=39
+#-----------
+time=11827643922
+mem_heap_B=490744
+mem_heap_extra_B=89320
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=40
+#-----------
+time=12068208139
+mem_heap_B=488800
+mem_heap_extra_B=88960
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=41
+#-----------
+time=12429053450
+mem_heap_B=486208
+mem_heap_extra_B=88480
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=42
+#-----------
+time=12669616506
+mem_heap_B=482968
+mem_heap_extra_B=87880
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=43
+#-----------
+time=12910178919
+mem_heap_B=481132
+mem_heap_extra_B=87540
+mem_stacks_B=0
+heap_tree=detailed
+n4: 481132 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n0: 412800 0x402F660: particle_factory (Photons.cc:84)
+ n1: 51672 0x47385A4: particle_sink (new_allocator.h:92)
+  n0: 51672 in 2610062 places, all below massif's threshold (01.00%)
+ n1: 8870 0x400AE1E: _dl_new_object (in /lib/ld-2.15.so)
+  n1: 8870 0x40064A6: _dl_map_object_from_fd (in /lib/ld-2.15.so)
+   n1: 8870 0x40083FE: _dl_map_object (in /lib/ld-2.15.so)
+    n1: 8870 0x4012D7B: dl_open_worker (in /lib/ld-2.15.so)
+     n1: 8870 0x400ECED: _dl_catch_error (in /lib/ld-2.15.so)
+      n1: 8870 0x4050BE7: ??? (in /lib/libdl-2.15.so)
+       n1: 8870 0x400ECED: _dl_catch_error (in /lib/ld-2.15.so)
+        n0: 8870 0x0: ???
+ n0: 7790 in 15 places, all below massif's threshold (01.00%)
+#-----------
+snapshot=44
+#-----------
+time=13271021454
+mem_heap_B=478432
+mem_heap_extra_B=87040
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=45
+#-----------
+time=13511584511
+mem_heap_B=476596
+mem_heap_extra_B=86700
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=46
+#-----------
+time=13752146737
+mem_heap_B=473572
+mem_heap_extra_B=86140
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=47
+#-----------
+time=13992710979
+mem_heap_B=472168
+mem_heap_extra_B=85880
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=48
+#-----------
+time=14353556203
+mem_heap_B=469360
+mem_heap_extra_B=85360
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=49
+#-----------
+time=14714399042
+mem_heap_B=467416
+mem_heap_extra_B=85000
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=50
+#-----------
+time=14914864261
+mem_heap_B=466000
+mem_heap_extra_B=84728
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=51
+#-----------
+time=15115329492
+mem_heap_B=465568
+mem_heap_extra_B=84648
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=52
+#-----------
+time=15315797072
+mem_heap_B=463528
+mem_heap_extra_B=84280
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=53
+#-----------
+time=15516266189
+mem_heap_B=461044
+mem_heap_extra_B=83820
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=54
+#-----------
+time=15716731942
+mem_heap_B=459532
+mem_heap_extra_B=83540
+mem_stacks_B=0
+heap_tree=detailed
+n4: 459532 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n0: 394080 0x402F660: particle_factory (Photons.cc:84)
+ n1: 49272 0x47385A4: particle_sink (new_allocator.h:92)
+  n0: 49272 in 3016786 places, all below massif's threshold (01.00%)
+ n1: 8870 0x400AE1E: _dl_new_object (in /lib/ld-2.15.so)
+  n1: 8870 0x40064A6: _dl_map_object_from_fd (in /lib/ld-2.15.so)
+   n1: 8870 0x40083FE: _dl_map_object (in /lib/ld-2.15.so)
+    n1: 8870 0x4012D7B: dl_open_worker (in /lib/ld-2.15.so)
+     n1: 8870 0x400ECED: _dl_catch_error (in /lib/ld-2.15.so)
+      n1: 8870 0x4050BE7: ??? (in /lib/libdl-2.15.so)
+       n1: 8870 0x400ECED: _dl_catch_error (in /lib/ld-2.15.so)
+        n0: 8870 0x0: ???
+ n0: 7310 in 15 places, all below massif's threshold (01.00%)
+#-----------
+snapshot=55
+#-----------
+time=15917199297
+mem_heap_B=458128
+mem_heap_extra_B=83280
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=56
+#-----------
+time=16117665336
+mem_heap_B=456076
+mem_heap_extra_B=82900
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=57
+#-----------
+time=16318131833
+mem_heap_B=454348
+mem_heap_extra_B=82580
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=58
+#-----------
+time=16518597785
+mem_heap_B=452836
+mem_heap_extra_B=82300
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=59
+#-----------
+time=16719065383
+mem_heap_B=451000
+mem_heap_extra_B=81960
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=60
+#-----------
+time=16919533053
+mem_heap_B=449920
+mem_heap_extra_B=81760
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=61
+#-----------
+time=17120000220
+mem_heap_B=448840
+mem_heap_extra_B=81560
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=62
+#-----------
+time=17320466065
+mem_heap_B=447868
+mem_heap_extra_B=81380
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=63
+#-----------
+time=17520934120
+mem_heap_B=447220
+mem_heap_extra_B=81260
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=64
+#-----------
+time=17721400132
+mem_heap_B=445924
+mem_heap_extra_B=81020
+mem_stacks_B=0
+heap_tree=detailed
+n4: 445924 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n0: 382080 0x402F660: particle_factory (Photons.cc:84)
+ n1: 47760 0x47385A4: particle_sink (new_allocator.h:92)
+  n0: 47760 in 3281198 places, all below massif's threshold (01.00%)
+ n1: 8870 0x400AE1E: _dl_new_object (in /lib/ld-2.15.so)
+  n1: 8870 0x40064A6: _dl_map_object_from_fd (in /lib/ld-2.15.so)
+   n1: 8870 0x40083FE: _dl_map_object (in /lib/ld-2.15.so)
+    n1: 8870 0x4012D7B: dl_open_worker (in /lib/ld-2.15.so)
+     n1: 8870 0x400ECED: _dl_catch_error (in /lib/ld-2.15.so)
+      n1: 8870 0x4050BE7: ??? (in /lib/libdl-2.15.so)
+       n1: 8870 0x400ECED: _dl_catch_error (in /lib/ld-2.15.so)
+        n0: 8870 0x0: ???
+ n0: 7214 in 15 places, all below massif's threshold (01.00%)
+#-----------
+snapshot=65
+#-----------
+time=17921867616
+mem_heap_B=444412
+mem_heap_extra_B=80740
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=66
+#-----------
+time=18122333185
+mem_heap_B=443440
+mem_heap_extra_B=80560
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=67
+#-----------
+time=18322799468
+mem_heap_B=442360
+mem_heap_extra_B=80360
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=68
+#-----------
+time=18523265918
+mem_heap_B=441280
+mem_heap_extra_B=80160
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=69
+#-----------
+time=18723732423
+mem_heap_B=439984
+mem_heap_extra_B=79920
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=70
+#-----------
+time=18924198800
+mem_heap_B=438364
+mem_heap_extra_B=79620
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=71
+#-----------
+time=19124667643
+mem_heap_B=437392
+mem_heap_extra_B=79440
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=72
+#-----------
+time=19325134591
+mem_heap_B=436204
+mem_heap_extra_B=79220
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=73
+#-----------
+time=19525599890
+mem_heap_B=434908
+mem_heap_extra_B=78980
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=74
+#-----------
+time=19726067188
+mem_heap_B=433720
+mem_heap_extra_B=78760
+mem_stacks_B=0
+heap_tree=detailed
+n4: 433720 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n0: 371136 0x402F660: particle_factory (Photons.cc:84)
+ n1: 46404 0x47385A4: particle_sink (new_allocator.h:92)
+  n0: 46404 in 3528016 places, all below massif's threshold (01.00%)
+ n1: 8870 0x400AE1E: _dl_new_object (in /lib/ld-2.15.so)
+  n1: 8870 0x40064A6: _dl_map_object_from_fd (in /lib/ld-2.15.so)
+   n1: 8870 0x40083FE: _dl_map_object (in /lib/ld-2.15.so)
+    n1: 8870 0x4012D7B: dl_open_worker (in /lib/ld-2.15.so)
+     n1: 8870 0x400ECED: _dl_catch_error (in /lib/ld-2.15.so)
+      n1: 8870 0x4050BE7: ??? (in /lib/libdl-2.15.so)
+       n1: 8870 0x400ECED: _dl_catch_error (in /lib/ld-2.15.so)
+        n0: 8870 0x0: ???
+ n0: 7310 in 15 places, all below massif's threshold (01.00%)
+#-----------
+snapshot=75
+#-----------
+time=19926534517
+mem_heap_B=432424
+mem_heap_extra_B=78520
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=76
+#-----------
+time=20127001272
+mem_heap_B=430696
+mem_heap_extra_B=78200
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=77
+#-----------
+time=20327467275
+mem_heap_B=429400
+mem_heap_extra_B=77960
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=78
+#-----------
+time=20527934618
+mem_heap_B=428320
+mem_heap_extra_B=77760
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=79
+#-----------
+time=20728402944
+mem_heap_B=427024
+mem_heap_extra_B=77520
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=80
+#-----------
+time=20928868804
+mem_heap_B=425836
+mem_heap_extra_B=77300
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=81
+#-----------
+time=21129334659
+mem_heap_B=424432
+mem_heap_extra_B=77040
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=82
+#-----------
+time=21329802478
+mem_heap_B=423352
+mem_heap_extra_B=76840
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=83
+#-----------
+time=21530268974
+mem_heap_B=422488
+mem_heap_extra_B=76680
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=84
+#-----------
+time=21730736793
+mem_heap_B=421084
+mem_heap_extra_B=76420
+mem_stacks_B=0
+heap_tree=detailed
+n4: 421084 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n0: 360000 0x402F660: particle_factory (Photons.cc:84)
+ n1: 45000 0x47385A4: particle_sink (new_allocator.h:92)
+  n0: 45000 in 3758434 places, all below massif's threshold (01.00%)
+ n1: 8870 0x400AE1E: _dl_new_object (in /lib/ld-2.15.so)
+  n1: 8870 0x40064A6: _dl_map_object_from_fd (in /lib/ld-2.15.so)
+   n1: 8870 0x40083FE: _dl_map_object (in /lib/ld-2.15.so)
+    n1: 8870 0x4012D7B: dl_open_worker (in /lib/ld-2.15.so)
+     n1: 8870 0x400ECED: _dl_catch_error (in /lib/ld-2.15.so)
+      n1: 8870 0x4050BE7: ??? (in /lib/libdl-2.15.so)
+       n1: 8870 0x400ECED: _dl_catch_error (in /lib/ld-2.15.so)
+        n0: 8870 0x0: ???
+ n0: 7214 in 15 places, all below massif's threshold (01.00%)
+#-----------
+snapshot=85
+#-----------
+time=21931203939
+mem_heap_B=419896
+mem_heap_extra_B=76200
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=86
+#-----------
+time=22131670770
+mem_heap_B=418816
+mem_heap_extra_B=76000
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=87
+#-----------
+time=22332136346
+mem_heap_B=417196
+mem_heap_extra_B=75700
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=88
+#-----------
+time=22532604107
+mem_heap_B=416440
+mem_heap_extra_B=75560
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=89
+#-----------
+time=22733070495
+mem_heap_B=415576
+mem_heap_extra_B=75400
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=90
+#-----------
+time=22933536610
+mem_heap_B=414604
+mem_heap_extra_B=75220
+mem_stacks_B=0
+heap_tree=empty

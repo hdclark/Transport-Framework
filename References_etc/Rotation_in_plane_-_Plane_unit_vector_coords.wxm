@@ -1,0 +1,108 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 11.08.0 ] */
+
+/* [wxMaxima: input   start ] */
+cos(t)*sin(p)
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+trigreduce(a1*u1 + a2*u2 + a3*u3);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+exponentialize(
+sin(t+p)=(a2*cos(t+p)+a1*sin(t-p)-a2*cos(t-p)-2*a3*cos(p))/a1
+);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+exponentialize(
+
+a2*sin(p)*sin(t)+a1*sin(p)*cos(t)+a3*cos(p)
+
+);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+solve([
+-(%i*a1*(%e^(%i*p)-%e^(-%i*p))*(%e^(%i*t)+%e^(-%i*t)))/4-(a2*(%e^(%i*p)-%e^(-%i*p))*(%e^(%i*t)-%e^(-%i*t)))/4+(a3*(%e^(%i*p)+%e^(-%i*p)))/2 = 0
+
+], [p]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+ToC(
+
+-%i*log(-sqrt((a2*%e^(2*%i*t))/(a2*%e^(2*%i*t)+%i*a1*%e^(2*%i*t)-2*a3*%e^(%i*t)-a2+%i*a1)+(%i*a1*%e^(2*%i*t))/(a2*%e^(2*%i*t)+%i*a1*%e^(2*%i*t)-2*a3*%e^(%i*t)-a2+%i*a1)+(2*a3*%e^(%i*t))/(a2*%e^(2*%i*t)+%i*a1*%e^(2*%i*t)-2*a3*%e^(%i*t)-a2+%i*a1)-a2/(a2*%e^(2*%i*t)+%i*a1*%e^(2*%i*t)-2*a3*%e^(%i*t)-a2+%i*a1)+(%i*a1)/(a2*%e^(2*%i*t)+%i*a1*%e^(2*%i*t)-2*a3*%e^(%i*t)-a2+%i*a1)))
+);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+ToC(
+
+-(%i*log((a2*%e^(2*%i*t))/(a2*%e^(2*%i*t)+%i*a1*%e^(2*%i*t)-2*a3*%e^(%i*t)-a2+%i*a1)+(%i*a1*%e^(2*%i*t))/(a2*%e^(2*%i*t)+%i*a1*%e^(2*%i*t)-2*a3*%e^(%i*t)-a2+%i*a1)+(2*a3*%e^(%i*t))/(a2*%e^(2*%i*t)+%i*a1*%e^(2*%i*t)-2*a3*%e^(%i*t)-a2+%i*a1)-a2/(a2*%e^(2*%i*t)+%i*a1*%e^(2*%i*t)-2*a3*%e^(%i*t)-a2+%i*a1)+(%i*a1)/(a2*%e^(2*%i*t)+%i*a1*%e^(2*%i*t)-2*a3*%e^(%i*t)-a2+%i*a1)))/2
+
+);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+U1(p,a1,a2,a3) := cos(
+
+-%i*log(-sqrt(a3^2*%e^(4*%i*p)+a2^2*%e^(4*%i*p)+a1^2*%e^(4*%i*p)+2*a3^2*%e^(2*%i*p)-2*a2^2*%e^(2*%i*p)-2*a1^2*%e^(2*%i*p)+a3^2+a2^2+a1^2)/(a2*%e^(2*%i*p)+%i*a1*%e^(2*%i*p)-a2-%i*a1)+(a3*%e^(2*%i*p))/(a2*%e^(2*%i*p)+%i*a1*%e^(2*%i*p)-a2-%i*a1)+a3/(a2*%e^(2*%i*p)+%i*a1*%e^(2*%i*p)-a2-%i*a1))
+)*sin(p);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+U2(p,a1,a2,a3) := sin(
+
+-%i*log(-sqrt(a3^2*%e^(4*%i*p)+a2^2*%e^(4*%i*p)+a1^2*%e^(4*%i*p)+2*a3^2*%e^(2*%i*p)-2*a2^2*%e^(2*%i*p)-2*a1^2*%e^(2*%i*p)+a3^2+a2^2+a1^2)/(a2*%e^(2*%i*p)+%i*a1*%e^(2*%i*p)-a2-%i*a1)+(a3*%e^(2*%i*p))/(a2*%e^(2*%i*p)+%i*a1*%e^(2*%i*p)-a2-%i*a1)+a3/(a2*%e^(2*%i*p)+%i*a1*%e^(2*%i*p)-a2-%i*a1))
+)*sin(p);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+U3(p,a1,a2,a3) := cos(p);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+realpart(rectform(U1( 0.1,  1.0, 0.0, 0.0)));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+realpart(rectform(U2( 0.1,  1.0, 0.0, 0.0)));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+realpart(rectform(U3(0.1, 1.0, 0.0, 0.0)));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+Length( p,a1,a2,a3) := sqrt(
+realpart(rectform( U1(p,a1,a2,a3)*U1(p,a1,a2,a3) )) + realpart(rectform( U2(p,a1,a2,a3)*U2(p,a1,a2,a3) ))+ 
+realpart(rectform( U3(p,a1,a2,a3)*U3(p,a1,a2,a3) ))
+);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+float( 1/sqrt(2));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+float(Length( 0.5, 0.1, 0.7071068, 0.7071068));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+    exptsubst: true;
+    ToC(x) := float(subst(M_E,exp, subst(pow,"^",  subst(exp,%e,  x ) )));
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+ToC(  
+
+
+log(sqrt(a3^2*%e^(4*%i*p)+a2^2*%e^(4*%i*p)+a1^2*%e^(4*%i*p)+2*a3^2*%e^(2*%i*p)-2*a2^2*%e^(2*%i*p)-2*a1^2*%e^(2*%i*p)+a3^2+a2^2+a1^2)/(a2*%e^(2*%i*p)+%i*a1*%e^(2*%i*p)-a2-%i*a1)+(a3*%e^(2*%i*p))/(a2*%e^(2*%i*p)+%i*a1*%e^(2*%i*p)-a2-%i*a1)+a3/(a2*%e^(2*%i*p)+%i*a1*%e^(2*%i*p)-a2-%i*a1))
+
+);
+/* [wxMaxima: input   end   ] */
+
+/* Maxima can't load/batch files which end with a comment! */
+"Created with wxMaxima"$

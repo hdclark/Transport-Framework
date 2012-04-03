@@ -1,0 +1,485 @@
+//Water_linear.cc - Basic, non-interactive module for handling water mediums. Uses a linear interpolation scheme generated from a lookup table for mass attenutation coefficients.
+//
+//Programming notes:
+//  -Do not make items here "const", because they will not show up when loading.
+//  -Avoid using macro variables here because they will be obliterated during loading.
+//  -Wrap dynamically-loaded code with extern "C", otherwise C++ compilation will mangle function names, etc.
+//
+// From man page for dlsym/dlopen:  For running some 'initialization' code prior to finishing loading:
+// "Instead,  libraries  should  export  routines using the __attribute__((constructor)) and __attribute__((destructor)) function attributes.  See the gcc 50.0o pages for
+//       50.0ormation on these.  Constructor routines are executed before dlopen() returns, and destructor routines are executed before dlclose() returns."
+//   ---for instance, we can use this to seed a random number generator with a random seed. However, in order to pass in a specific seed (and pass that seed to the library)
+//      we need to define an explicitly callable initialization function. In general, these libraries should have both so that we can quickly adjust behaviour if desired.
+//  
+
+#include <iostream>
+#include <string>
+#include <vector>
+
+#include <cmath>
+
+#include "./Misc.h" //Using isininc macro from here.
+
+#include "./Constants.h"
+#include "./Structs.h"
+ 
+#ifdef __cplusplus
+    extern "C" {
+#endif
+
+std::string MODULE_NAME(__FILE__);
+std::string FILE_TYPE("MEDIUM");
+std::string MEDIUM_TYPE("WATER");
+
+bool VERBOSE = true;
+
+
+//This is a helper function. The odd name comes from a Maxima cspline interpolation function.
+inline double charfun2(double x, double A, double B){
+    return (x >= A) && (x < B) ? 1.0 : 0.0;
+}
+
+double photon_mass_coefficient_coherent(const double &E){
+    if(!isininc(0.0, E, 50.0)) FUNCERR("Water-Photon-coherent mass coefficient is outside of range of data (0-50 MeV) at " << E );
+
+    return  
+(1.57-200.0000000000002*E)*charfun2(E,0.0,0.0015)+
+(8.599999999999999E-8-1.27E-9*E)*charfun2(E,40.0,50.0)+
+(1.4480000000000004E-7-2.740000000000001E-9*E)*charfun2(E,30.0,40.0)+
+(2.978E-7-7.840000000000001E-9*E)*charfun2(E,20.0,30.0)+
+(5.769999999999998E-7-2.1799999999999997E-8*E)*charfun2(E,15.0,20.0)+
+(1.189E-6-6.260000000000002E-8*E)*charfun2(E,10.0,15.0)+
+(2.1480000000000002E-6-1.585E-7*E)*charfun2(E,8.0,10.0)+
+(3.6E-6-3.4E-7*E)*charfun2(E,6.0,8.0)+
+(5.7E-6-6.9E-7*E)*charfun2(E,5.0,6.0)+
+(8.6E-6-1.27E-6*E)*charfun2(E,4.0,5.0)+
+(1.4479999999999998E-5-2.74E-6*E)*charfun2(E,3.0,4.0)+
+(2.9779999999999995E-5-7.839999999999999E-6*E)*charfun2(E,2.0,3.0)+
+(5.770000000000001E-5-2.1800000000000003E-5*E)*charfun2(E,1.5,2.0)+
+(9.1E-5-4.3999999999999995E-5*E)*charfun2(E,1.25,1.5)+
+(1.375E-4-8.12E-5*E)*charfun2(E,1.0,1.25)+
+(2.143E-4-1.5800000000000003E-4*E)*charfun2(E,0.8,1.0)+
+(3.6029999999999995E-4-3.4049999999999986E-4*E)*charfun2(E,0.6,0.8)+
+(5.700000000000001E-4-6.900000000000001E-4*E)*charfun2(E,0.5,0.6)+
+(8.550000000000002E-4-0.00126*E)*charfun2(E,0.4,0.5)+
+(0.001435-.002709999999999999*E)*charfun2(E,0.3,0.4)+
+(0.002926-0.00768*E)*charfun2(E,0.2,0.3)+
+(.005589999999999998-.02099999999999999*E)*charfun2(E,0.15,0.2)+
+(0.01117-.05820000000000001*E)*charfun2(E,0.1,0.15)+
+(0.0194-0.1405*E)*charfun2(E,0.08,0.1)+
+(.03111999999999999-.2869999999999999*E)*charfun2(E,0.06,0.08)+
+(.04690000000000003-.5500000000000005*E)*charfun2(E,0.05,0.06)+
+(.06589999999999999-.9299999999999998*E)*charfun2(E,0.04,0.05)+
+(0.1015-1.819999999999999*E)*charfun2(E,0.03,0.04)+
+(0.172-4.170000000000001*E)*charfun2(E,0.02,0.03)+
+(0.2662-8.88*E)*charfun2(E,0.015,0.02)+
+(0.427-19.6*E)*charfun2(E,0.01,0.015)+
+(0.626-39.49999999999999*E)*charfun2(E,0.008,0.01)+
+(.8660000000000001-69.5*E)*charfun2(E,0.006,0.008)+
+(1.103-109.0*E)*charfun2(E,0.005,0.006)+
+(1.308-149.9999999999999*E)*charfun2(E,0.004,0.005)+
+(1.512-201.0000000000001*E)*charfun2(E,0.003,0.004)+
+(1.632-240.9999999999999*E)*charfun2(E,0.002,0.003)+
+(1.63-240.0000000000002*E)*charfun2(E,0.0015,0.002);
+}
+
+double photon_mass_coefficient_compton(const double &E){
+    if(!isininc(0.0, E, 50.0)) FUNCERR("Water-Photon-compton mass coefficient is outside of range of data (0-50 MeV) at " << E );
+
+    return
+ (27.0*E-.01380000000000001)*charfun2(E,0.0,0.0015)+
+(.009759999999999998-9.699999999999996E-5*E)*charfun2(E,40.0,50.0)+
+(0.01196-1.5200000000000005E-4*E)*charfun2(E,30.0,40.0)+
+(0.0158-2.8E-4*E)*charfun2(E,20.0,30.0)+
+(0.0202-4.999999999999998E-4*E)*charfun2(E,15.0,20.0)+
+(0.0259-8.800000000000002E-4*E)*charfun2(E,10.0,15.0)+
+(0.0321-0.0015*E)*charfun2(E,8.0,10.0)+
+(0.0377-.002200000000000001*E)*charfun2(E,6.0,8.0)+
+(.04429999999999999-.003299999999999997*E)*charfun2(E,5.0,6.0)+
+(0.0498-.004400000000000001*E)*charfun2(E,4.0,5.0)+
+(0.0574-0.0063*E)*charfun2(E,3.0,4.0)+
+(0.07-0.0105*E)*charfun2(E,2.0,3.0)+
+(.08259999999999999-0.0168*E)*charfun2(E,1.5,2.0)+
+(.09220000000000003-.02320000000000003*E)*charfun2(E,1.25,1.5)+
+(0.1007-.02999999999999997*E)*charfun2(E,1.0,1.25)+
+(0.1102-.03950000000000003*E)*charfun2(E,0.8,1.0)+
+(.1217999999999999-.05399999999999993*E)*charfun2(E,0.6,0.8)+
+(.1326000000000001-.07200000000000013*E)*charfun2(E,0.5,0.6)+
+(0.1436-.09399999999999993*E)*charfun2(E,0.4,0.5)+
+(0.154-.1199999999999999*E)*charfun2(E,0.3,0.4)+
+(0.169-.1700000000000002*E)*charfun2(E,0.2,0.3)+
+(.1829999999999999-.2399999999999996*E)*charfun2(E,0.15,0.2)+
+(0.195-.3200000000000003*E)*charfun2(E,0.1,0.15)+
+(0.198-.3500000000000003*E)*charfun2(E,0.08,0.1)+
+(.1979999999999999-.3499999999999989*E)*charfun2(E,0.06,0.08)+
+(0.195-.3000000000000004*E)*charfun2(E,0.05,0.06)+
+(0.195-.3000000000000002*E)*charfun2(E,0.04,0.05)+
+0.183*charfun2(E,0.03,0.04)+
+(.6000000000000006*E+0.165)*charfun2(E,0.02,0.03)+
+(1.399999999999995*E+.1490000000000001)*charfun2(E,0.015,0.02)+
+(3.000000000000003*E+0.125)*charfun2(E,0.01,0.015)+
+(5.500000000000005*E+.09999999999999995)*charfun2(E,0.008,0.01)+
+(8.999999999999995*E+.07200000000000004)*charfun2(E,0.006,0.008)+
+(14.0*E+.04200000000000001)*charfun2(E,0.005,0.006)+
+(17.70000000000001*E+.02349999999999997)*charfun2(E,0.004,0.005)+
+(23.59999999999999*E-9.999999999998899E-5)*charfun2(E,0.003,0.004)+
+(28.9*E-.01600000000000001)*charfun2(E,0.002,0.003)+
+(30.19999999999999*E-.01859999999999999)*charfun2(E,0.0015,0.002);
+}
+
+
+
+double photon_mass_coefficient_photoelectric(const double &E){
+    if(!isininc(0.0, E, 50.0)) FUNCERR("Water-Photon-photoelectric mass coefficient is outside of range of data (0-50 MeV) at " << E );
+    if( E <= water_binding_energy_oxygen_K ) return 0.0;
+
+    return 
+//(9500.0-5420000.0*E)*charfun2(E,0.0,0.0015)+
+(5.83E-8-6.599999999999999E-10*E)*charfun2(E,40.0,50.0)+
+(7.59E-8-1.0999999999999999E-9*E)*charfun2(E,30.0,40.0)+
+(1.1100000000000003E-7-2.2700000000000004E-9*E)*charfun2(E,20.0,30.0)+
+(1.5959999999999996E-7-4.699999999999999E-9*E)*charfun2(E,15.0,20.0)+
+(2.3879999999999998E-7-9.979999999999999E-9*E)*charfun2(E,10.0,15.0)+
+(3.3400000000000013E-7-1.950000000000001E-8*E)*charfun2(E,8.0,10.0)+
+(4.58E-7-3.499999999999999E-8*E)*charfun2(E,6.0,8.0)+
+(6.139999999999999E-7-6.099999999999998E-8*E)*charfun2(E,5.0,6.0)+
+(8.04E-7-9.900000000000002E-8*E)*charfun2(E,4.0,5.0)+
+(1.1520000000000001E-6-1.8600000000000003E-7*E)*charfun2(E,3.0,4.0)+
+(1.9920000000000002E-6-4.6599999999999997E-7*E)*charfun2(E,2.0,3.0)+
+(3.58E-6-1.2599999999999997E-6*E)*charfun2(E,1.5,2.0)+
+(5.530000000000002E-6-2.560000000000001E-6*E)*charfun2(E,1.25,1.5)+
+(9.08E-6-5.399999999999999E-6*E)*charfun2(E,1.0,1.25)+
+(1.4880000000000004E-5-1.1200000000000003E-5*E)*charfun2(E,0.8,1.0)+
+(2.903999999999999E-5-2.8899999999999987E-5*E)*charfun2(E,0.6,0.8)+
+(5.429999999999999E-5-7.1E-5*E)*charfun2(E,0.5,0.6); //+
+//(9.930000000000002E-5-1.6100000000000003E-4*E)*charfun2(E,0.4,0.5)+
+//(2.2169999999999995E-4-4.6699999999999986E-4*E)*charfun2(E,0.3,0.4)+
+//(7.038E-4-0.002074*E)*charfun2(E,0.2,0.3)+
+//(0.002057-.008839999999999997*E)*charfun2(E,0.15,0.2)+
+//(0.006818-0.04058*E)*charfun2(E,0.1,0.15)+
+//(0.01781-0.1505*E)*charfun2(E,0.08,0.1)+
+//(.04228999999999999-.4564999999999999*E)*charfun2(E,0.06,0.08)+
+//(.08870000000000003-1.230000000000001*E)*charfun2(E,0.05,0.06)+
+//(0.1752-2.96*E)*charfun2(E,0.04,0.05)+
+//(0.4136-8.919999999999998*E)*charfun2(E,0.03,0.04)+
+//(1.34-39.8*E)*charfun2(E,0.02,0.03)+
+//(3.848-165.2*E)*charfun2(E,0.015,0.02)+
+//(12.08-714.0000000000001*E)*charfun2(E,0.01,0.015)+
+//(29.84-2490.0*E)*charfun2(E,0.008,0.01)+
+//(66.64-7090.000000000001*E)*charfun2(E,0.006,0.008)+
+//(130.9-17800.0*E)*charfun2(E,0.005,0.006)+
+//(242.4-40100.0*E)*charfun2(E,0.004,0.005)+
+//(522.0-110000.0*E)*charfun2(E,0.003,0.004)+
+//(1464.0-424000.0*E)*charfun2(E,0.002,0.003)+
+//(3632.0-1508000.0*E)*charfun2(E,0.0015,0.002);
+}
+
+/*
+double photon_mass_coefficient_photoelectric(const double &E){
+    if(!isininc(0.0, E, 50.0)) FUNCERR("Water-Photon-photoelectric mass coefficient is outside of range of data (0-50 MeV) at " << E );
+//    if( E <= water_binding_energy_oxygen_K ) return 0.0;
+
+    return
+(9500.0-5420000.0*E)*charfun2(E,0.0,0.0015)+
+(5.83E-8-6.599999999999999E-10*E)*charfun2(E,40.0,50.0)+
+(7.59E-8-1.0999999999999999E-9*E)*charfun2(E,30.0,40.0)+
+(1.1100000000000003E-7-2.2700000000000004E-9*E)*charfun2(E,20.0,30.0)+
+(1.5959999999999996E-7-4.699999999999999E-9*E)*charfun2(E,15.0,20.0)+
+(2.3879999999999998E-7-9.979999999999999E-9*E)*charfun2(E,10.0,15.0)+
+(3.3400000000000013E-7-1.950000000000001E-8*E)*charfun2(E,8.0,10.0)+
+(4.58E-7-3.499999999999999E-8*E)*charfun2(E,6.0,8.0)+
+(6.139999999999999E-7-6.099999999999998E-8*E)*charfun2(E,5.0,6.0)+
+(8.04E-7-9.900000000000002E-8*E)*charfun2(E,4.0,5.0)+
+(1.1520000000000001E-6-1.8600000000000003E-7*E)*charfun2(E,3.0,4.0)+
+(1.9920000000000002E-6-4.6599999999999997E-7*E)*charfun2(E,2.0,3.0)+
+(3.58E-6-1.2599999999999997E-6*E)*charfun2(E,1.5,2.0)+
+(5.530000000000002E-6-2.560000000000001E-6*E)*charfun2(E,1.25,1.5)+
+(9.08E-6-5.399999999999999E-6*E)*charfun2(E,1.0,1.25)+
+(1.4880000000000004E-5-1.1200000000000003E-5*E)*charfun2(E,0.8,1.0)+
+(2.903999999999999E-5-2.8899999999999987E-5*E)*charfun2(E,0.6,0.8)+
+(5.429999999999999E-5-7.1E-5*E)*charfun2(E,0.5,0.6)+
+(9.930000000000002E-5-1.6100000000000003E-4*E)*charfun2(E,0.4,0.5)+
+(2.2169999999999995E-4-4.6699999999999986E-4*E)*charfun2(E,0.3,0.4)+
+(7.038E-4-0.002074*E)*charfun2(E,0.2,0.3)+
+(0.002057-.008839999999999997*E)*charfun2(E,0.15,0.2)+
+(0.006818-0.04058*E)*charfun2(E,0.1,0.15)+
+(0.01781-0.1505*E)*charfun2(E,0.08,0.1)+
+(.04228999999999999-.4564999999999999*E)*charfun2(E,0.06,0.08)+
+(.08870000000000003-1.230000000000001*E)*charfun2(E,0.05,0.06)+
+(0.1752-2.96*E)*charfun2(E,0.04,0.05)+
+(0.4136-8.919999999999998*E)*charfun2(E,0.03,0.04)+
+(1.34-39.8*E)*charfun2(E,0.02,0.03)+
+(3.848-165.2*E)*charfun2(E,0.015,0.02)+
+(12.08-714.0000000000001*E)*charfun2(E,0.01,0.015)+
+(29.84-2490.0*E)*charfun2(E,0.008,0.01)+
+(66.64-7090.000000000001*E)*charfun2(E,0.006,0.008)+
+(130.9-17800.0*E)*charfun2(E,0.005,0.006)+
+(242.4-40100.0*E)*charfun2(E,0.004,0.005)+
+(522.0-110000.0*E)*charfun2(E,0.003,0.004)+
+(1464.0-424000.0*E)*charfun2(E,0.002,0.003)+
+(3632.0-1508000.0*E)*charfun2(E,0.0015,0.002);
+}
+*/
+
+double photon_mass_coefficient_pair_triplet(const double &E){
+    if(!isininc(0.0, E, 50.0)) FUNCERR("Water-Photon-Pair production mass coefficient is outside of range of data (0-50 MeV) at " << E );
+
+    if( E < 1.2 ) return 0.0;
+
+    return 
+(3.216E-4*E-3.842E-4)*charfun2(E,0.0,1.5)+
+(8.999999999999998E-5*E+.007300000000000001)*charfun2(E,40.0,50.0)+
+(1.1900000000000002E-4*E+0.00614)*charfun2(E,30.0,40.0)+
+(1.730000000000001E-4*E+.004519999999999997)*charfun2(E,20.0,30.0)+
+(2.4599999999999986E-4*E+.003060000000000002)*charfun2(E,15.0,20.0)+
+(3.320000000000001E-4*E+.001769999999999999)*charfun2(E,10.0,15.0)+
+(4.3999999999999984E-4*E+6.900000000000014E-4)*charfun2(E,8.0,10.0)+
+(5.250000000000001E-4*E+9.999999999999593E-6)*charfun2(E,6.0,8.0)+
+(6.199999999999999E-4*E-5.599999999999993E-4)*charfun2(E,5.0,6.0)+
+(6.700000000000003E-4*E-8.100000000000014E-4)*charfun2(E,4.0,5.0)+
+(7.4E-4*E-0.00109)*charfun2(E,3.0,4.0)+
+(7.389999999999999E-4*E-.001086999999999999)*charfun2(E,2.0,3.0)+
+(5.856E-4*E-7.802E-4)*charfun2(E,1.5,2.0);
+}
+
+
+#ifdef __GNUG__
+    __attribute__((constructor)) static void init_on_dynamic_load(void){
+        //Do something automatic here.
+        if(VERBOSE) FUNCINFO("Loaded lib_water_linear.so");
+        return;
+    }
+
+    __attribute__((destructor)) static void cleanup_on_dynamic_unload(void){
+        //Cleanup memory (if needed) automatically here.
+        if(VERBOSE) FUNCINFO("Closed lib_water_linear.so");
+        return;
+    }
+#else
+    #warning Being compiled with non-gcc compiler. Unable to use gcc-specific function declarations like 'attribute.' Proceed at your own risk!
+#endif 
+
+void toggle_verbosity(bool in){
+    VERBOSE = in;
+    return;
+}
+
+
+double mean_free_path( base_particle *in, const double &clamped ){
+    //Check if we are dealing with photons.
+    if(in->get_type() == Particletype::Photon){ 
+        //Grab the energy of the particle.
+        const double E = in->get_energy();
+
+        //Determine the total interaction cross-section at this energy. (Probably should not trust tabulated data here, particularly if it
+        // has been interpolated!)
+        const double s_coherent       = photon_mass_coefficient_coherent(E);
+        const double s_compton        = photon_mass_coefficient_compton(E);
+        const double s_photoelectric  = photon_mass_coefficient_photoelectric(E);
+        const double s_pair_triplet   = photon_mass_coefficient_pair_triplet(E);
+        const double s_tot            = s_coherent + s_compton + s_photoelectric + s_pair_triplet;
+        const double mu_tot           = s_tot*water_mass_density;
+
+        return -log(clamped)/mu_tot;
+    }else if(in->get_type() == Particletype::Electron){
+        //We consider electrons to move zero distance before interacting.
+        return 0.0;
+
+    }else if(in->get_type() == Particletype::Positron){
+        //We consider positrons to move zero distance before interacting.
+        return 0.0;
+    }
+
+    FUNCERR("Mean-free-path for unaccounted-for particle requested");
+    return 0.0;
+}
+
+unsigned char which_interaction( base_particle *in, const double &clamped ){
+    //Check if we are dealing with photons.
+    if(in->get_type() == Particletype::Photon){
+        //Grab the energy of the particle.
+        const double E = in->get_energy();
+    
+        //Determine the total interaction cross-section at this energy. (Probably should not trust tabulated data here, particularly if it
+        // has been interpolated!)
+        const double s_coherent       = photon_mass_coefficient_coherent(E);
+        const double s_compton        = photon_mass_coefficient_compton(E);
+        const double s_photoelectric  = photon_mass_coefficient_photoelectric(E);
+        const double s_pair_triplet   = photon_mass_coefficient_pair_triplet(E);
+        const double s_tot            = s_coherent + s_compton + s_photoelectric + s_pair_triplet;
+  
+        if( isininc(0.0, clamped*s_tot, s_coherent) ){
+            return Interactiontype::Coherent;
+        }else if( isininc(s_coherent, clamped*s_tot, s_coherent+s_compton) ){
+            return Interactiontype::Compton;
+        }else if( isininc(s_coherent+s_compton, clamped*s_tot, s_coherent+s_compton+s_photoelectric) ){
+            return Interactiontype::Photoelectric;
+        }else{ //}else if( isininc(s_coherent+s_compton+s_photoelectric, clamped*s_tot, s_coherent+s_compton+s_photoelectric+s_pair_triplet) ){
+            return Interactiontype::Pair;
+        }
+
+    }else if(in->get_type() == Particletype::Electron){
+        //We consider electrons to *always* interact with a total dump of energy (locally.)
+        return Interactiontype::LocalDump;
+
+    }else if(in->get_type() == Particletype::Positron){
+        //We consider positrons to *always* interact with a total dump of energy (locally.)
+        return Interactiontype::LocalDump;
+    }
+
+    FUNCERR("Interaction choice for unaccounted-for particle requested");
+    return 0.0;
+}
+
+//This is used for slow media to avoid having to compute the mass attenuation coefficients twice.
+void mean_free_path_and_which_interaction( base_particle *in, const double &clamped1, const double &clamped2, unsigned char &which, double &mfp){
+    //Check if we are dealing with photons.
+    if(in->get_type() == Particletype::Photon){
+        //Grab the energy of the particle.
+        const double E = in->get_energy();
+
+        //Determine the total interaction cross-section at this energy. (Probably should not trust tabulated data here, particularly if it
+        // has been interpolated!)
+
+        const double s_coherent       = photon_mass_coefficient_coherent(E);
+        const double s_compton        = photon_mass_coefficient_compton(E);
+        const double s_photoelectric  = photon_mass_coefficient_photoelectric(E);
+        const double s_pair_triplet   = photon_mass_coefficient_pair_triplet(E);
+        const double s_tot            = s_coherent + s_compton + s_photoelectric + s_pair_triplet;
+        const double mu_tot           = s_tot*water_mass_density;
+
+        mfp = -log(clamped2)/mu_tot;
+
+        if( isininc(0.0, clamped1*s_tot, s_coherent) ){
+            which = Interactiontype::Coherent;
+        }else if( isininc(s_coherent, clamped1*s_tot, s_coherent+s_compton) ){
+            which = Interactiontype::Compton;
+        }else if( isininc(s_coherent+s_compton, clamped1*s_tot, s_coherent+s_compton+s_photoelectric) ){
+            which = Interactiontype::Photoelectric;
+        }else{ //}else if( isininc(s_coherent+s_compton+s_photoelectric, clamped1*s_tot, s_coherent+s_compton+s_photoelectric+s_pair_triplet) ){
+            which = Interactiontype::Pair;
+        }
+   
+        return;
+
+    }else if(in->get_type() == Particletype::Electron){
+        //We consider electrons to *always* interact with a total dump of energy (locally.)
+        mfp = 0.0;
+        which = Interactiontype::LocalDump;
+
+        return;
+    }else if(in->get_type() == Particletype::Positron){
+        //We consider positrons to *always* interact with a total dump of energy (locally.)
+        mfp = 0.0;
+        which = Interactiontype::LocalDump;
+ 
+        return;
+    }
+
+    FUNCERR("Interaction choice for unaccounted-for particle requested");
+
+    return;
+}
+
+/*
+// Look-up table - Mass attenuation coefficients for photons in water. Coefficients are (MeV), (cm*cm/g).
+// E | Coherent | Compton | Photoelectric | Pair+Triplet | Total Attenuation | Energy Tansfer | Energy Absorption | 1-g
+0.0010 1.37 0.0132 4080 0 4080 4065 4065 1; 
+0.0015 1.27 0.0267 1370 0 1380 1372 1372 1;
+0.0020 1.15 0.0418 616 0 617 615.2 615.2 0.9999;
+0.0030 0.909 0.0707 192 0 193 191.7 191.7 0.9999;
+0.0040 0.708 0.0943 82.0 0 82.8 81.92 81.91 0.9999;
+0.0050 0.558 0.112 41.9 0 42.6 41.89 41.88 0.9998;
+0.0060 0.449 0.126 24.1 0 24.6 24.06 24.05 0.9998;
+0.0080 0.31 0.144 9.92 0 10.4 9.918 9.915 0.9998;
+0.0100 0.231 0.155 4.94 0 5.33 4.945 4.944 0.9998;
+0.0150 0.133 0.17 1.37 0 1.67 1.374 1.374 0.9997;
+0.0200 0.0886 0.177 0.544 0 0.81 0.5505 0.5503 0.9997;
+0.0300 0.0469 0.183 0.146 0 0.376 0.1557 0.1557 0.9996;
+0.0400 0.0287 0.183 0.0568 0 0.268 0.0695 0.06947 0.9996;
+0.0500 0.0194 0.18 0.0272 0 0.227 0.04225 0.04223 0.9996;
+0.0600 0.0139 0.177 0.0149 0 0.206 0.03191 0.0319 0.9996;
+0.0800 0.00816 0.17 0.00577 0 0.184 0.02598 0.02597 0.9996;
+0.1000 0.00535 0.163 0.00276 0 0.171 0.02547 0.02546 0.9996;
+0.1500 0.00244 0.147 0.000731 0 0.151 0.02765 0.02764 0.9995;
+0.2000 0.00139 0.135 0.000289 0 0.137 0.02969 0.02967 0.9994;
+0.3000 0.000622 0.118 0.0000816 0 0.119 0.03195 0.03192 0.9992;
+0.4000 0.000351 0.106 0.0000349 0 0.106 0.03282 0.03279 0.9989;
+0.5000 0.000225 0.0966 0.0000188 0 0.0969 0.03303 0.03299 0.9987;
+0.6000 0.000156 0.0894 0.0000117 0 0.0896 0.03289 0.03284 0.9984;
+0.8000 0.0000879 0.0786 0.00000592 0 0.0787 0.03212 0.03206 0.998;
+1.0000 0.0000563 0.0707 0.00000368 0 0.0707 0.03111 0.03103 0.9975;
+1.2500 0.000036 0.0632 0.00000233 0.0000178 0.0632 0.02974 0.02965 0.9969;
+1.5000 0.000025 0.0574 0.00000169 0.0000982 0.0575 0.02844 0.02833 0.9962;
+2.0000 0.0000141 0.049 0.00000106 0.000391 0.0494 0.02621 0.02608 0.9948;
+3.0000 0.00000626 0.0385 0.000000594 0.00113 0.0397 0.023 0.02281 0.9916;
+4.0000 0.00000352 0.0322 0.000000408 0.00187 0.034 0.02091 0.02066 0.988;
+5.0000 0.00000225 0.0278 0.000000309 0.00254 0.0303 0.1946 0.1915 0.984;
+6.0000 0.00000156 0.0245 0.000000248 0.00316 0.0277 0.01843 0.01806 0.98;
+8.0000 0.00000088 0.0201 0.000000178 0.00421 0.0243 0.01707 0.01658 0.9716;
+10.000 0.000000563 0.0171 0.000000139 0.00509 0.0222 0.01626 0.01566 0.9633;
+15.000 0.00000025 0.0127 0.0000000891 0.00675 0.0194 0.01528 0.01441 0.9432;
+20.000 0.000000141 0.0102 0.0000000656 0.00798 0.0181 0.01495 0.01382 0.9245;
+30.000 0.0000000626 0.0074 0.0000000429 0.00971 0.0171 0.0149 0.01327 0.8904;
+40.000 0.0000000352 0.00588 0.0000000319 0.0109 0.0168 0.0151 0.01298 0.86;
+50.000 0.0000000225 0.00491 0.0000000253 0.0118 0.0167 0.01537 0.01279 0.8323
+*/
+
+
+/*
+if((n>0)&&(n<=2480))
+    Photon_Energy(n)=0.25; % Photon Energy in MeV
+elseif((n>2480)&&(n<=15000))
+    Photon_Energy(n)=0.5; % Photon Energy in MeV
+elseif((n>15000)&&(n<=27290))
+    Photon_Energy(n)=0.75; % Photon Energy in MeV
+elseif((n>27290)&&(n<=37590))
+    Photon_Energy(n)=1; % Photon Energy in MeV
+elseif((n>37590)&&(n<=46310))
+    Photon_Energy(n)=1.25; % Photon Energy in MeV
+elseif((n>46310)&&(n<=53760))
+    Photon_Energy(n)=1.5; % Photon Energy in MeV
+elseif((n>53760)&&(n<=60140))
+    Photon_Energy(n)=1.75; % Photon Energy in MeV
+elseif((n>60140)&&(n<=65680))
+    Photon_Energy(n)=2; % Photon Energy in MeV
+elseif((n>65680)&&(n<=70460))
+    Photon_Energy(n)=2.25; % Photon Energy in MeV
+elseif((n>70460)&&(n<=74630))
+    Photon_Energy(n)=2.5; % Photon Energy in MeV
+elseif((n>74630)&&(n<=78290))
+    Photon_Energy(n)=2.75; % Photon Energy in MeV
+elseif((n>78290)&&(n<=81510))
+    Photon_Energy(n)=3; % Photon Energy in MeV
+elseif((n>81510)&&(n<=84330))
+    Photon_Energy(n)=3.25; % Photon Energy in MeV
+elseif((n>84330)&&(n<=86860))
+    Photon_Energy(n)=3.5; % Photon Energy in MeV
+elseif((n>86860)&&(n<=89090))
+    Photon_Energy(n)=3.75; % Photon Energy in MeV
+elseif((n>89090)&&(n<=91060))
+    Photon_Energy(n)=4; % Photon Energy in MeV
+elseif((n>91060)&&(n<=92790))
+    Photon_Energy(n)=4.25; % Photon Energy in MeV
+elseif((n>92790)&&(n<=94330))
+    Photon_Energy(n)=4.5; % Photon Energy in MeV
+elseif((n>94330)&&(n<=95670))
+    Photon_Energy(n)=4.75; % Photon Energy in MeV
+elseif((n>95670)&&(n<=96840))
+    Photon_Energy(n)=5; % Photon Energy in MeV
+elseif((n>96840)&&(n<=97850))
+    Photon_Energy(n)=5.25; % Photon Energy in MeV
+elseif((n>97850)&&(n<=98710))
+    Photon_Energy(n)=5.5; % Photon Energy in MeV
+elseif((n>98710)&&(n<=99420))
+    Photon_Energy(n)=5.75; % Photon Energy in MeV
+elseif((n>99420)&&(n<=100000))
+    Photon_Energy(n)=6; % Photon Energy in MeV
+end
+*/
+
+#ifdef __cplusplus
+    }
+
+#endif
+
