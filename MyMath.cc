@@ -68,15 +68,9 @@ template double vec3<double>::distance(const vec3<double> &rhs);
 
 
 template <class T>    std::istream &operator>>( std::istream &in, vec3<T> &L ) {
+  char grbg;
   //... << "("  << L.x << ", " << L.y << ", " <<  L.z  <<  ")";
-  //We have at least TWO options here. We can use a method which is compatible
-  // with the ( , , ) notation, or we can ask for straight-up numbers. 
-  //We will discriminate here based on what 'in' is.
-  if(in != std::cin){
-      char grbg;
-      //... << "("  << L.x << ", " << L.y << ", " <<  L.z  <<  ")";
-      in    >> grbg >> L.x >> grbg >> L.y >> grbg >>  L.z  >> grbg;
-  }else  in >> L.x >> L.y >> L.z;
+  in    >> grbg >> L.x >> grbg >> L.y >> grbg >>  L.z  >> grbg;
   return in;
 }
     

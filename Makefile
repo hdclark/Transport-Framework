@@ -11,7 +11,7 @@ CC    =  ccache g++
 
 DEFINITIONS   = #-D
 
-CPPFLAGS      = -std=c++0x 
+CPPFLAGS      = -std=c++0x -fPIC
 
 OPTIMIZATIONS = -O3 -ffast-math -funsafe-loop-optimizations -march=native -mtune=native \
                 -fno-signed-zeros -fno-trapping-math -fassociative-math -freciprocal-math \
@@ -30,7 +30,7 @@ COMMON        = ${DEFINITIONS} ${CPPFLAGS} ${OPTIMZTNS} ${LIB_PATHS} ${WARNINGS}
 
 ###############################################################################
 
-DYNAMIC_OPTS  = -fpic -shared -Wl,-z,defs
+DYNAMIC_OPTS  = -fPIC -shared -Wl,-z,defs
 
 ###############################################################################
 
