@@ -1,19 +1,19 @@
 
 # Transport-Framework
 
-> "Either it'll move me,  
+> "*Either it'll move me,  
 >  or it'll move right through me.  
->  Fully, and completely."  
+>  Fully, and completely.*"  
 >  
-> -- Gord Downie (*presumably reflecting on the law of conservation of momentum*).
+> -- Gordon Edgar Downie. (Presumably reflecting on the law of conservation of momentum.)
 
 ## Where to get started
 
 The best place to learn about what this framework can do, consult the document:
-`References\_etc/Technical\_report\_1.pdf`. To learn about the code structure,
+`References_etc/Technical_report_1.pdf`. To learn about the code structure,
 organization, or design, (currently) the best place to look is at the source
 itself. A future technical report may address these questions, but currently no
-documentation exists.
+other documentation exists.
 
 ## Introduction
 
