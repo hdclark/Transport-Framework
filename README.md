@@ -1,7 +1,11 @@
 
 === Project - Transport ===
-Author: hal clark.
-Date: February - March 2012.
+
+> "Either it'll move me,
+>  or it'll move right through me.
+>  Fully, and completely."
+>
+> -- Gord Downie, presumably reflecting on the law of conservation of momentum.
 
 == Where to get started ==
 
